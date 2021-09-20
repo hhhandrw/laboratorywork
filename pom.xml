@@ -7,5 +7,13 @@
     <groupId>ru.ssau.tk.respect.laboratorywork1</groupId>
     <artifactId>respect-laboratorywork1</artifactId>
     <version>1.0-SNAPSHOT</version>
-    
+
+    <properties>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+    </properties>
+
+    <dependencies>
+    </dependencies>
+
 </project>
