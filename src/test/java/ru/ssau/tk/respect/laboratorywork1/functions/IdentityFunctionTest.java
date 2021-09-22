@@ -15,5 +15,4 @@ public class IdentityFunctionTest {
         assertEquals(function.apply(-14), -14.0);
         assertEquals(function.apply(1 / 20.0), 0.05);
     }
-
 }

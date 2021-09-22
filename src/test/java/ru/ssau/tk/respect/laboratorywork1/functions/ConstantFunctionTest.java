@@ -14,5 +14,4 @@ public class ConstantFunctionTest {
         assertEquals(c.apply(0), 5.0);
         assertEquals(c.apply(-5), 5.0);
     }
-
 }

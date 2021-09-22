@@ -23,7 +23,6 @@ public class CompositeFunctionTest {
         assertEquals(secondCF.apply(2), 1.1578, DELTA);
         assertEquals(secondCF.apply(10), -0.5872, DELTA);
         assertEquals(thirdCF.apply(4), 1.1578, DELTA);
-        assertEquals(thirdCF.apply(3), 0.0392, DELTA);
+        assertEquals(thirdCF.apply(3), -1.2386, DELTA);
     }
-
 }

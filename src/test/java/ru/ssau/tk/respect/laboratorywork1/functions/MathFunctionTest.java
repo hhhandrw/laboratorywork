@@ -23,5 +23,4 @@ public class MathFunctionTest {
         assertEquals(id.andThen(sf).andThen(tf).apply(10),
                 -0.5872, DELTA);
     }
-
 }

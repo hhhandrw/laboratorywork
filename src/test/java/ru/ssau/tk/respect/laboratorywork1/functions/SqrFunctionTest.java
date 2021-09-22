@@ -14,5 +14,4 @@ public class SqrFunctionTest {
         assertEquals(function.apply(0), 0.0);
         assertEquals(function.apply(-12), 144.0);
     }
-
 }

@@ -14,5 +14,4 @@ public class ZeroFunctionTest {
         assertEquals(z.apply(0), 0.0);
         assertEquals(z.apply(678), 0.0);
     }
-
 }

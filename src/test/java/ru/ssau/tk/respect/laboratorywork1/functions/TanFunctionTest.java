@@ -16,5 +16,4 @@ public class TanFunctionTest {
         assertEquals(function.apply(56), -0.6112, DELTA);
         assertEquals(function.apply(-108), -2.4681, DELTA);
     }
-
 }
