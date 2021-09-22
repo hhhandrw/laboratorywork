@@ -8,6 +8,7 @@ public class HalfFunctionTest {
 
     @Test
     public void testApply() {
+
         HalfFunction halfFunction = new HalfFunction();
 
         assertEquals(halfFunction.apply(4), 2.0);
