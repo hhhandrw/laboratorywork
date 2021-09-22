@@ -4,8 +4,8 @@ public class ConstantFunction implements MathFunction {
 
     private final double constant;
 
-    public ConstantFunction(double CONSTANT) {
-        this.constant = CONSTANT;
+    public ConstantFunction(double constant) {
+        this.constant = constant;
     }
 
     public double getConstant() {
@@ -15,5 +15,4 @@ public class ConstantFunction implements MathFunction {
     public double apply(double x) {
         return constant;
     }
-
 }

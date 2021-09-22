@@ -6,6 +6,8 @@ import static org.testng.Assert.*;
 
 public class MathFunctionTest {
 
+    private final static double DELTA = 0.0001;
+
     @Test
     public void testAndThen() {
         MathFunction sf = new SqrFunction();
@@ -13,13 +15,13 @@ public class MathFunctionTest {
         MathFunction id = new IdentityFunction();
 
         assertEquals(sf.andThen(tf).andThen(id).apply(1),
-                1.5574077246549023);
+                1.5574, DELTA);
         assertEquals(tf.andThen(sf).andThen(id).apply(8),
-                46.23607587425524);
+                46.2360, DELTA);
         assertEquals(id.andThen(tf).andThen(sf).apply(17),
-                12.207446537693869);
+                12.2074, DELTA);
         assertEquals(id.andThen(sf).andThen(tf).apply(10),
-                -0.5872139151569291);
+                -0.5872, DELTA);
     }
 
 }

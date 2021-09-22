@@ -7,5 +7,4 @@ public class TanFunction implements MathFunction {
         x = Math.tan(x);
         return x;
     }
-
 }

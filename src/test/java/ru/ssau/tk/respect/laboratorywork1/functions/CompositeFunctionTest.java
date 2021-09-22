@@ -1,11 +1,12 @@
 package ru.ssau.tk.respect.laboratorywork1.functions;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
 
 public class CompositeFunctionTest {
+
+    private final static double DELTA = 0.0001;
 
     @Test
     public void testApply() {
@@ -17,11 +18,12 @@ public class CompositeFunctionTest {
         CompositeFunction secondCF = new CompositeFunction(firstCF, TF);
         CompositeFunction thirdCF = new CompositeFunction(HF, secondCF);
 
-        assertEquals(firstCF.apply(5), 25.0);
-        assertEquals(firstCF.apply(9), 81.0);
-        assertEquals(secondCF.apply(2), 1.1578212823495775);
-        assertEquals(secondCF.apply(10), -0.5872139151569291);
-        assertEquals(thirdCF.apply(4), 1.1578212823495775);
-        assertEquals(thirdCF.apply(3), -1.2386276162240966);
+        assertEquals(firstCF.apply(5), 25.0, DELTA);
+        assertEquals(firstCF.apply(9), 81.0, DELTA);
+        assertEquals(secondCF.apply(2), 1.1578, DELTA);
+        assertEquals(secondCF.apply(10), -0.5872, DELTA);
+        assertEquals(thirdCF.apply(4), 1.1578, DELTA);
+        assertEquals(thirdCF.apply(3), 0.0392, DELTA);
     }
+
 }
