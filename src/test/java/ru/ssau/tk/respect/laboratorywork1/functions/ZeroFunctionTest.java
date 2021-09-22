@@ -8,10 +8,10 @@ public class ZeroFunctionTest {
 
     @Test
     public void testApply() {
-        ZeroFunction z = new ZeroFunction();
+        ZeroFunction zeroFunction = new ZeroFunction();
 
-        assertEquals(z.apply(11), 0.0);
-        assertEquals(z.apply(0), 0.0);
-        assertEquals(z.apply(678), 0.0);
+        assertEquals(zeroFunction.apply(11), 0.0);
+        assertEquals(zeroFunction.apply(0), 0.0);
+        assertEquals(zeroFunction.apply(678), 0.0);
     }
 }

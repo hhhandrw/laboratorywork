@@ -10,19 +10,19 @@ public class CompositeFunctionTest {
 
     @Test
     public void testApply() {
-        IdentityFunction IF = new IdentityFunction();
-        SqrFunction SF = new SqrFunction();
-        TanFunction TF = new TanFunction();
-        HalfFunction HF = new HalfFunction();
-        CompositeFunction firstCF = new CompositeFunction(IF, SF);
-        CompositeFunction secondCF = new CompositeFunction(firstCF, TF);
-        CompositeFunction thirdCF = new CompositeFunction(HF, secondCF);
+        IdentityFunction identityFunction = new IdentityFunction();
+        SqrFunction sqrFunction = new SqrFunction();
+        TanFunction tanFunction = new TanFunction();
+        HalfFunction halfFunction = new HalfFunction();
+        CompositeFunction firstCompositeFunction = new CompositeFunction(identityFunction, sqrFunction);
+        CompositeFunction secondCompositeFunction = new CompositeFunction(firstCompositeFunction, tanFunction);
+        CompositeFunction thirdCompositeFunction = new CompositeFunction(halfFunction, secondCompositeFunction);
 
-        assertEquals(firstCF.apply(5), 25.0, DELTA);
-        assertEquals(firstCF.apply(9), 81.0, DELTA);
-        assertEquals(secondCF.apply(2), 1.1578, DELTA);
-        assertEquals(secondCF.apply(10), -0.5872, DELTA);
-        assertEquals(thirdCF.apply(4), 1.1578, DELTA);
-        assertEquals(thirdCF.apply(3), -1.2386, DELTA);
+        assertEquals(firstCompositeFunction.apply(5), 25.0, DELTA);
+        assertEquals(firstCompositeFunction.apply(9), 81.0, DELTA);
+        assertEquals(secondCompositeFunction.apply(2), 1.1578, DELTA);
+        assertEquals(secondCompositeFunction.apply(10), -0.5872, DELTA);
+        assertEquals(thirdCompositeFunction.apply(4), 1.1578, DELTA);
+        assertEquals(thirdCompositeFunction.apply(3), -1.2386, DELTA);
     }
 }

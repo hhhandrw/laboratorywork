@@ -10,10 +10,10 @@ public class TanFunctionTest {
 
     @Test
     public void testApply() {
-        TanFunction function = new TanFunction();
+        TanFunction tanFunction = new TanFunction();
 
-        assertEquals(function.apply(2), -2.1850, DELTA);
-        assertEquals(function.apply(56), -0.6112, DELTA);
-        assertEquals(function.apply(-108), -2.4681, DELTA);
+        assertEquals(tanFunction.apply(2), -2.1850, DELTA);
+        assertEquals(tanFunction.apply(56), -0.6112, DELTA);
+        assertEquals(tanFunction.apply(-108), -2.4681, DELTA);
     }
 }
