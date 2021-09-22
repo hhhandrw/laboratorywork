@@ -19,4 +19,5 @@ public class CompositeFunctionTest {
         assertEquals(secondCF.apply(2), 1.1578212823495777);
         assertEquals(secondCF.apply(10), -0.5872139151569291);
     }
+
 }
