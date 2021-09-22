@@ -15,6 +15,5 @@ public class UnitFunctionTest {
         assertEquals(u.apply(0), 1.0);
 
         assertEquals(u.apply(-101), 1.0);
-
     }
 }
