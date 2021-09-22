@@ -2,8 +2,8 @@ package ru.ssau.tk.respect.laboratorywork1.functions;
 
 public class CompositeFunction implements MathFunction {
 
-    private MathFunction firstFunction;
-    private MathFunction secondFunction;
+    private final MathFunction firstFunction;
+    private final MathFunction secondFunction;
 
     public CompositeFunction(MathFunction firstFunction, MathFunction secondFunction) {
         this.firstFunction = firstFunction;
@@ -14,5 +14,4 @@ public class CompositeFunction implements MathFunction {
     public double apply(double x) {
         return secondFunction.apply(firstFunction.apply(x));
     }
-
 }
