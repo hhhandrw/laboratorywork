@@ -1,5 +1,6 @@
 package ru.ssau.tk.respect.laboratorywork1.functions;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
@@ -18,10 +19,9 @@ public class CompositeFunctionTest {
 
         assertEquals(firstCF.apply(5), 25.0);
         assertEquals(firstCF.apply(9), 81.0);
-        assertEquals(secondCF.apply(2), 1.1578212823495777);
+        assertEquals(secondCF.apply(2), 1.1578212823495775);
         assertEquals(secondCF.apply(10), -0.5872139151569291);
-        assertEquals(thirdCF.apply(4), 1.1578212823495777);
-        assertEquals(thirdCF.apply(3), 0.03929010700766964017);
+        assertEquals(thirdCF.apply(4), 1.1578212823495775);
+        assertEquals(thirdCF.apply(3), -1.2386276162240966);
     }
-
 }
