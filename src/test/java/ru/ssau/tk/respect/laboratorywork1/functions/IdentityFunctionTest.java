@@ -5,6 +5,7 @@ import org.testng.annotations.*;
 import static org.testng.Assert.*;
 
 public class IdentityFunctionTest {
+
     @Test
     public void TestFunction() {
         IdentityFunction function = new IdentityFunction();
@@ -14,4 +15,5 @@ public class IdentityFunctionTest {
         assertEquals(function.apply(-14), -14.0);
         assertEquals(function.apply(1 / 20.0), 0.05);
     }
+
 }

@@ -11,6 +11,7 @@ public class MathFunctionTest {
         MathFunction sf = new SqrFunction();
         MathFunction tf = new TanFunction();
         MathFunction id = new IdentityFunction();
+
         assertEquals(sf.andThen(tf).andThen(id).apply(1),
                 1.5574077246549023);
         assertEquals(tf.andThen(sf).andThen(id).apply(8),
@@ -20,4 +21,5 @@ public class MathFunctionTest {
         assertEquals(id.andThen(sf).andThen(tf).apply(10),
                 -0.5872139151569291);
     }
+
 }

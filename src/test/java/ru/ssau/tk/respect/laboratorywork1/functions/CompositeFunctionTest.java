@@ -23,4 +23,5 @@ public class CompositeFunctionTest {
         assertEquals(thirdCF.apply(4), 1.1578212823495777);
         assertEquals(thirdCF.apply(3), 0.03929010700766964017);
     }
+
 }
