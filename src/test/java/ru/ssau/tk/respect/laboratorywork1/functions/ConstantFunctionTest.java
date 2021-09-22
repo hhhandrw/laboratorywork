@@ -7,6 +7,7 @@ import static org.testng.Assert.*;
 public class ConstantFunctionTest {
     @Test
     public void testApply() {
+
         ConstantFunction c = new ConstantFunction(5);
 
         assertEquals(c.apply(3), 5.0);
