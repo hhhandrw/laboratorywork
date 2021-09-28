@@ -8,11 +8,10 @@ public class SqrFunctionTest {
 
     @Test
     public void testApply() {
-        SqrFunction function = new SqrFunction();
+        SqrFunction sqrFunction = new SqrFunction();
 
-        assertEquals(function.apply(5), 25.0);
-        assertEquals(function.apply(0), 0.0);
-        assertEquals(function.apply(-12), 144.0);
+        assertEquals(sqrFunction.apply(5), 25.0);
+        assertEquals(sqrFunction.apply(0), 0.0);
+        assertEquals(sqrFunction.apply(-12), 144.0);
     }
-
 }

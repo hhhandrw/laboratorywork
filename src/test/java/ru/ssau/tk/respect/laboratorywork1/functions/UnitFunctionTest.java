@@ -8,11 +8,10 @@ public class UnitFunctionTest {
 
     @Test
     public void testApply() {
-        UnitFunction u = new UnitFunction();
+        UnitFunction unitFunction = new UnitFunction();
 
-        assertEquals(u.apply(101), 1.0);
-        assertEquals(u.apply(0), 1.0);
-        assertEquals(u.apply(-101), 1.0);
+        assertEquals(unitFunction.apply(101), 1.0);
+        assertEquals(unitFunction.apply(0), 1.0);
+        assertEquals(unitFunction.apply(-101), 1.0);
     }
-
 }

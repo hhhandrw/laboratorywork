@@ -7,13 +7,12 @@ import static org.testng.Assert.*;
 public class IdentityFunctionTest {
 
     @Test
-    public void TestFunction() {
-        IdentityFunction function = new IdentityFunction();
+    public void testApply() {
+        IdentityFunction identityFunction = new IdentityFunction();
 
-        assertEquals(function.apply(5), 5.0);
-        assertEquals(function.apply(0), 0.0);
-        assertEquals(function.apply(-14), -14.0);
-        assertEquals(function.apply(1 / 20.0), 0.05);
+        assertEquals(identityFunction.apply(5), 5.0);
+        assertEquals(identityFunction.apply(0), 0.0);
+        assertEquals(identityFunction.apply(-14), -14.0);
+        assertEquals(identityFunction.apply(1 / 20.0), 0.05);
     }
-
 }

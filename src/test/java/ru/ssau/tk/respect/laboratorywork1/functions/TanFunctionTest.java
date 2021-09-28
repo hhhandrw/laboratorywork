@@ -6,13 +6,14 @@ import static org.testng.Assert.*;
 
 public class TanFunctionTest {
 
+    private final static double DELTA = 0.0001;
+
     @Test
     public void testApply() {
-        TanFunction function = new TanFunction();
+        TanFunction tanFunction = new TanFunction();
 
-        assertEquals(function.apply(2), -2.185039863261519);
-        assertEquals(function.apply(56), -0.6112736881917098);
-        assertEquals(function.apply(-108), -2.468161961582769);
+        assertEquals(tanFunction.apply(2), -2.1850, DELTA);
+        assertEquals(tanFunction.apply(56), -0.6112, DELTA);
+        assertEquals(tanFunction.apply(-108), -2.4681, DELTA);
     }
-
 }
