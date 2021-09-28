@@ -10,17 +10,18 @@ public class MathFunctionTest {
 
     @Test
     public void testAndThen() {
-        MathFunction sqrFunction = new SqrFunction();
-        MathFunction tanFunction = new TanFunction();
-        MathFunction identityFunction = new IdentityFunction();
+        MathFunction sf = new SqrFunction();
+        MathFunction tf = new TanFunction();
+        MathFunction id = new IdentityFunction();
 
-        assertEquals(sqrFunction.andThen(tanFunction).andThen(identityFunction).apply(1),
-                1.5574, DELTA);
-        assertEquals(tanFunction.andThen(sqrFunction).andThen(identityFunction).apply(8),
-                46.2360, DELTA);
-        assertEquals(identityFunction.andThen(tanFunction).andThen(sqrFunction).apply(17),
-                12.2074, DELTA);
-        assertEquals(identityFunction.andThen(sqrFunction).andThen(tanFunction).apply(10),
-                -0.5872, DELTA);
+        assertEquals(sf.andThen(tf).andThen(id).apply(1),
+                1.5574077246549023);
+        assertEquals(tf.andThen(sf).andThen(id).apply(8),
+                46.23607587425524);
+        assertEquals(id.andThen(tf).andThen(sf).apply(17),
+                12.207446537693869);
+        assertEquals(id.andThen(sf).andThen(tf).apply(10),
+                -0.5872139151569291);
     }
+
 }
