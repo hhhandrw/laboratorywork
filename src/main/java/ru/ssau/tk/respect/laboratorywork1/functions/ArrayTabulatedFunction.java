@@ -3,26 +3,29 @@ package ru.ssau.tk.respect.laboratorywork1.functions;
 import java.util.Arrays;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
-    private double[] xValues;
-    private double[] yValues;
+    private final double[] xValues;
+    private final double[] yValues;
     private int count;
 
     ArrayTabulatedFunction(double[] xValues, double[] yValues) {
+        count = xValues.length;
         this.xValues = Arrays.copyOf(xValues, count);
         this.yValues = Arrays.copyOf(yValues, count);
-        count = xValues.length;
     }
 
-    ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-        double j = xFrom;
+    public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
+        xValues = new double[count];
+        yValues = new double[count];
         double step = (xTo - xFrom) / (count - 1);
-        for (int i = 0; i <= count; i++) {
+        double j = xFrom;
+        for (int i = 0; i < count; i++) {
             yValues[i] = source.apply(j);
             xValues[i] = j;
             j += step;
         }
         this.count = count;
     }
+
 
     @Override
     public int getCount() {
@@ -51,34 +54,35 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
 
     @Override
     public double rightBound() {
-        return xValues[getCount()];
+        return xValues[count - 1];
     }
 
     @Override
     public int indexOfX(double x) {
-        for (int i = 0; i < count; i++) {
-            if (xValues[i] == x)
-                return i;
-        }
-        return -1;
+        int returned = Arrays.binarySearch(xValues, x);
+        return returned < 0 ? -1 : returned;
     }
 
     @Override
     public int indexOfY(double y) {
         for (int i = 0; i < count; i++) {
-            if (yValues[i] == y)
+            if (yValues[i] == y) {
                 return i;
+            }
         }
         return -1;
     }
 
     @Override
-    public int floorIndexOfX(double x) {
-        for (int i = count; i > 0; i--) {
-            if (xValues[i] < x)
-                return i;
+    protected int floorIndexOfX(double x) {
+        if (x > rightBound()) {
+            return count - 1;
+        } else if (x < leftBound()) {
+            return 0;
+        } else if (Arrays.binarySearch(xValues, x) < 0) {
+            return Math.abs(Arrays.binarySearch(xValues, x) + 2);
         }
-        return getCount();
+        return Arrays.binarySearch(xValues, x);
     }
 
     @Override
@@ -98,7 +102,10 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     @Override
-    public double interpolate(double x, int floorIndex) {
+    protected double interpolate(double x, int floorIndex) {
+        if (count == 1) {
+            return yValues[0];
+        }
         return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1],
                 yValues[floorIndex], yValues[floorIndex + 1]);
     }
