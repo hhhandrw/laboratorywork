@@ -13,7 +13,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
     private Node last;
     private final int count;
 
-    private void addNode(double x, double y) {
+    protected void addNode(double x, double y) {
         Node node = new Node();
         node.x = x;
         node.y = y;
