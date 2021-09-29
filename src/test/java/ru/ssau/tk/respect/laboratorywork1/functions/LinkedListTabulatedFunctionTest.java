@@ -168,4 +168,17 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(array.interpolate(5, 2), 8.0);
     }
 
+    @Test
+    public void testCompositeFunction() {
+        MathFunction firstListOfFunction = firstGetFromFunction();
+        MathFunction secondListOfFunction = secondGetFromFunction();
+
+
+        assertEquals(firstListOfFunction.andThen(secondListOfFunction).apply(2), 1.4672, DELTA);
+        assertEquals(secondListOfFunction.andThen(firstListOfFunction).apply(6), 1.5009, DELTA);
+        assertEquals(firstListOfFunction.andThen(function).apply(3), -0.1465, DELTA);
+        assertEquals(function.andThen(secondListOfFunction).apply(5), -0.2467, DELTA);
+        assertEquals(function.andThen(firstListOfFunction).apply(7), -6.2657, DELTA);
+    }
+
 }
