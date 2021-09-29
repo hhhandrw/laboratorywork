@@ -10,10 +10,18 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     ArrayTabulatedFunction(double[] xValues, double[] yValues) {
         this.xValues = Arrays.copyOf(xValues, count);
         this.yValues = Arrays.copyOf(yValues, count);
+        count = xValues.length;
     }
 
     ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-
+        double j = xFrom;
+        double step = (xTo - xFrom) / (count - 1);
+        for (int i = 0; i <= count; i++) {
+            yValues[i] = source.apply(j);
+            xValues[i] = j;
+            j += step;
+        }
+        this.count = count;
     }
 
     @Override
@@ -70,23 +78,28 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
             if (xValues[i] < x)
                 return i;
         }
-        return 0;
+        return getCount();
     }
 
     @Override
-    public double extrapolateLeft(double x) {
-        return yValues[0] + (yValues[1] - yValues[0]) / (xValues[1] - xValues[0]) * (x - xValues[0]);
+    protected double extrapolateLeft(double x) {
+        if (count == 1) {
+            return yValues[0];
+        }
+        return interpolate(x, 0);
     }
 
     @Override
-    public double extrapolateRight(double x) {
-        return yValues[count - 1] + (yValues[count] - yValues[count - 1]) / (xValues[count] - xValues[count - 1]) *
-                (x - xValues[count - 1]);
+    protected double extrapolateRight(double x) {
+        if (count == 1) {
+            return yValues[0];
+        }
+        return interpolate(x, count - 2);
     }
 
     @Override
     public double interpolate(double x, int floorIndex) {
-        return yValues[floorIndex - 1] + (yValues[floorIndex] - yValues[floorIndex - 1]) / (xValues[floorIndex] -
-                xValues[floorIndex - 1]) * (x - xValues[floorIndex - 1]);
+        return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1],
+                yValues[floorIndex], yValues[floorIndex + 1]);
     }
 }
