@@ -23,13 +23,13 @@ public class ArrayTabulatedFunctionTest {
         return new ArrayTabulatedFunction(firstFunction, 13, 20, 60);
     }
 
-    private ArrayTabulatedFunction getArray() {
+    private ArrayTabulatedFunction createFromArray() {
         return new ArrayTabulatedFunction(xValues, yValues);
     }
 
     @Test
     public void testGetCount() {
-        ArrayTabulatedFunction array = getArray();
+        ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
         ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
         ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
@@ -41,7 +41,7 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testGetX() {
-        ArrayTabulatedFunction array = getArray();
+        ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
         ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
         ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
@@ -53,7 +53,7 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testGetY() {
-        ArrayTabulatedFunction array = getArray();
+        ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
         ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
         ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
@@ -66,7 +66,7 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testLeftBound() {
-        ArrayTabulatedFunction array = getArray();
+        ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
         ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
         ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
@@ -78,7 +78,7 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testRightBound() {
-        ArrayTabulatedFunction array = getArray();
+        ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
         ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
         ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
@@ -90,7 +90,7 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testIndexOfX() {
-        ArrayTabulatedFunction array = getArray();
+        ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
         ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
         ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
@@ -102,7 +102,7 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testIndexOfY() {
-        ArrayTabulatedFunction array = getArray();
+        ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
         ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
         ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
@@ -114,7 +114,7 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testFloorIndexOfX() {
-        ArrayTabulatedFunction array = getArray();
+        ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
         ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
         ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
@@ -126,7 +126,7 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testExtrapolateLeft() {
-        ArrayTabulatedFunction array = getArray();
+        ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
         ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
         ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
@@ -138,7 +138,7 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testExtrapolateRight() {
-        ArrayTabulatedFunction array = getArray();
+        ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
         ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
         ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
@@ -150,7 +150,7 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testInterpolate() {
-        ArrayTabulatedFunction array = getArray();
+        ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
         ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
         ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
