@@ -10,23 +10,30 @@ public class LinkedListTabulatedFunctionTest {
     private final double[] xValues = new double[]{1, 3, 5, 7, 9};
     private final double[] yValues = new double[]{4, 6, 8, 10, 12};
 
-    private final MathFunction function = new HalfFunction();
+    private final MathFunction firstFunction = new HalfFunction();
+    private final MathFunction secondFunction = new TanFunction();
 
     private LinkedListTabulatedFunction createFirstFunction() {
-        return new LinkedListTabulatedFunction(function, 2, 6, 15);
+        return new LinkedListTabulatedFunction(firstFunction, 2, 6, 15);
     }
 
     private LinkedListTabulatedFunction createSecondFunction() {
-        return new LinkedListTabulatedFunction(function, -5, 4, 30);
+        return new LinkedListTabulatedFunction(firstFunction, -5, 4, 30);
     }
 
     private LinkedListTabulatedFunction createThirdFunction() {
-        return new LinkedListTabulatedFunction(function, 13, 20, 60);
+        return new LinkedListTabulatedFunction(firstFunction, 13, 20, 60);
+    }
+
+    private ArrayTabulatedFunction createForthFunction() {
+        return new ArrayTabulatedFunction(secondFunction, 11, 25, 50);
     }
 
     private LinkedListTabulatedFunction createFromArray() {
         return new LinkedListTabulatedFunction(xValues, yValues);
     }
+
+
 
     @Test
     public void testAddNode() {
@@ -192,12 +199,18 @@ public class LinkedListTabulatedFunctionTest {
     public void testCompositeFunction() {
         MathFunction firstListOfFunction = createFirstFunction();
         MathFunction secondListOfFunction = createSecondFunction();
+        MathFunction thirdListOfFunction = createThirdFunction();
+        MathFunction forthListOfFunction = createForthFunction();
 
-        assertEquals(firstListOfFunction.andThen(secondListOfFunction).apply(2), 1.4672, DELTA);
-        assertEquals(secondListOfFunction.andThen(firstListOfFunction).apply(6), 1.5009, DELTA);
-        assertEquals(firstListOfFunction.andThen(function).apply(3), -0.1465, DELTA);
-        assertEquals(function.andThen(secondListOfFunction).apply(5), -0.2467, DELTA);
-        assertEquals(function.andThen(firstListOfFunction).apply(7), -6.2657, DELTA);
+        assertEquals(firstListOfFunction.andThen(secondListOfFunction).apply(2), 0.5, DELTA);
+        assertEquals(secondListOfFunction.andThen(firstListOfFunction).apply(6), 1.5, DELTA);
+        assertEquals(firstListOfFunction.andThen(firstFunction).apply(3), 0.75, DELTA);
+        assertEquals(firstFunction.andThen(secondListOfFunction).apply(5), 1.25, DELTA);
+        assertEquals(firstFunction.andThen(firstListOfFunction).apply(7), 1.75, DELTA);
+        assertEquals(thirdListOfFunction.andThen(forthListOfFunction).apply(45), 0.5713, DELTA);
+        assertEquals(thirdListOfFunction.andThen(forthListOfFunction).andThen(secondFunction).apply(105), 38.2382, DELTA);
+        assertEquals(thirdListOfFunction.andThen(forthListOfFunction).andThen(firstFunction).apply(50), -0.0667, DELTA);
+        assertEquals(forthListOfFunction.andThen(thirdListOfFunction).andThen(firstFunction).apply(55), 8.1354, DELTA);
     }
 
     @Test
