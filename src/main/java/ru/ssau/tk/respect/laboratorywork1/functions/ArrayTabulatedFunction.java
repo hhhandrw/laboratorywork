@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     private final double[] xValues;
     private final double[] yValues;
-    private int count;
+    private final int count;
 
     ArrayTabulatedFunction(double[] xValues, double[] yValues) {
         count = xValues.length;
@@ -25,7 +25,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         }
         this.count = count;
     }
-
 
     @Override
     public int getCount() {
