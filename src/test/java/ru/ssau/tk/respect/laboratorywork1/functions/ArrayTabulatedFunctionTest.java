@@ -68,7 +68,6 @@ public class ArrayTabulatedFunctionTest {
         assertEquals(thirdListOfFunction.getY(7), 6.9152, DELTA);
     }
 
-
     @Test
     public void testLeftBound() {
         ArrayTabulatedFunction array = createFromArray();

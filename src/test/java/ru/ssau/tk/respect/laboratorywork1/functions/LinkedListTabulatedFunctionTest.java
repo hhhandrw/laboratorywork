@@ -33,7 +33,6 @@ public class LinkedListTabulatedFunctionTest {
         return new LinkedListTabulatedFunction(xValues, yValues);
     }
 
-
     @Test
     public void testAddNode() {
         LinkedListTabulatedFunction array = createFromArray();
