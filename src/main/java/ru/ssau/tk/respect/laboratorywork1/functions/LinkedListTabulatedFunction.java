@@ -20,7 +20,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
             node.prev = last;
             node.next = head;
         }
-        last = head.prev;
+        last = node;
     }
 
     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
