@@ -11,18 +11,18 @@ public class ArrayTabulatedFunctionTest {
     private final double[] xValues = new double[]{1, 3, 5, 7, 9};
     private final double[] yValues = new double[]{4, 6, 8, 10, 12};
 
-    private final MathFunction firstFunction = new HalfFunction();
+    private final MathFunction function = new HalfFunction();
 
-    private ArrayTabulatedFunction firstGetFromFunction() {
-        return new ArrayTabulatedFunction(firstFunction, 2, 6, 15);
+    private ArrayTabulatedFunction createFirstFunction() {
+        return new ArrayTabulatedFunction(function, 2, 6, 15);
     }
 
-    private ArrayTabulatedFunction secondGetFromFunction() {
-        return new ArrayTabulatedFunction(firstFunction, -5, 4, 30);
+    private ArrayTabulatedFunction createSecondFunction() {
+        return new ArrayTabulatedFunction(function, -5, 4, 30);
     }
 
-    private ArrayTabulatedFunction thirdGetFromFunction() {
-        return new ArrayTabulatedFunction(firstFunction, 13, 20, 60);
+    private ArrayTabulatedFunction createThirdFunction() {
+        return new ArrayTabulatedFunction(function, 13, 20, 60);
     }
 
     private ArrayTabulatedFunction createFromArray() {
@@ -32,9 +32,9 @@ public class ArrayTabulatedFunctionTest {
     @Test
     public void testGetCount() {
         ArrayTabulatedFunction array = createFromArray();
-        ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
-        ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
-        ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
+        ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+        ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
+        ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.getCount(), 5);
         assertEquals(firstListOfFunction.getCount(), 15);
@@ -45,9 +45,9 @@ public class ArrayTabulatedFunctionTest {
     @Test
     public void testGetX() {
         ArrayTabulatedFunction array = createFromArray();
-        ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
-        ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
-        ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
+        ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+        ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
+        ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.getX(1), 3.0);
         assertEquals(firstListOfFunction.getX(0), 2.0);
@@ -58,9 +58,9 @@ public class ArrayTabulatedFunctionTest {
     @Test
     public void testGetY() {
         ArrayTabulatedFunction array = createFromArray();
-        ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
-        ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
-        ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
+        ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+        ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
+        ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.getY(3), 10.0);
         assertEquals(firstListOfFunction.getY(0), 1.0);
@@ -72,9 +72,9 @@ public class ArrayTabulatedFunctionTest {
     @Test
     public void testLeftBound() {
         ArrayTabulatedFunction array = createFromArray();
-        ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
-        ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
-        ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
+        ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+        ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
+        ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.leftBound(), 1.0);
         assertEquals(firstListOfFunction.leftBound(), 2.0);
@@ -85,9 +85,9 @@ public class ArrayTabulatedFunctionTest {
     @Test
     public void testRightBound() {
         ArrayTabulatedFunction array = createFromArray();
-        ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
-        ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
-        ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
+        ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+        ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
+        ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.rightBound(), 9.0);
         assertEquals(firstListOfFunction.rightBound(), 6.0, DELTA);
@@ -106,9 +106,9 @@ public class ArrayTabulatedFunctionTest {
     @Test
     public void testIndexOfX() {
         ArrayTabulatedFunction array = createFromArray();
-        ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
-        ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
-        ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
+        ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+        ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
+        ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.indexOfX(9.0), 4);
         assertEquals(firstListOfFunction.indexOfX(2.0), 0);
@@ -119,9 +119,9 @@ public class ArrayTabulatedFunctionTest {
     @Test
     public void testIndexOfY() {
         ArrayTabulatedFunction array = createFromArray();
-        ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
-        ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
-        ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
+        ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+        ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
+        ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.indexOfY(6.0), 1);
         assertEquals(firstListOfFunction.indexOfY(1.0), 0);
@@ -132,9 +132,9 @@ public class ArrayTabulatedFunctionTest {
     @Test
     public void testFloorIndexOfX() {
         ArrayTabulatedFunction array = createFromArray();
-        ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
-        ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
-        ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
+        ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+        ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
+        ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.floorIndexOfX(4.0), 1);
         assertEquals(firstListOfFunction.floorIndexOfX(4.0), 7);
@@ -145,9 +145,9 @@ public class ArrayTabulatedFunctionTest {
     @Test
     public void testExtrapolateLeft() {
         ArrayTabulatedFunction array = createFromArray();
-        ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
-        ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
-        ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
+        ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+        ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
+        ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.extrapolateLeft(0.0), 3.0);
         assertEquals(firstListOfFunction.extrapolateLeft(-10.0), -5.0);
@@ -158,9 +158,9 @@ public class ArrayTabulatedFunctionTest {
     @Test
     public void testExtrapolateRight() {
         ArrayTabulatedFunction array = createFromArray();
-        ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
-        ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
-        ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
+        ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+        ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
+        ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.extrapolateRight(10.0), 13.0);
         assertEquals(firstListOfFunction.extrapolateRight(7.0), 3.5);
@@ -171,9 +171,9 @@ public class ArrayTabulatedFunctionTest {
     @Test
     public void testInterpolate() {
         ArrayTabulatedFunction array = createFromArray();
-        ArrayTabulatedFunction firstListOfFunction = firstGetFromFunction();
-        ArrayTabulatedFunction secondListOfFunction = secondGetFromFunction();
-        ArrayTabulatedFunction thirdListOfFunction = thirdGetFromFunction();
+        ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+        ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
+        ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.interpolate(4.0, 1), 7.0);
         assertEquals(firstListOfFunction.interpolate(4.0, 2), 2.0);
