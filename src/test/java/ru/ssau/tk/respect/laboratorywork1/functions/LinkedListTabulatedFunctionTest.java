@@ -200,4 +200,15 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(function.andThen(firstListOfFunction).apply(7), -6.2657, DELTA);
     }
 
+    @Test
+    public void testApply() {
+        LinkedListTabulatedFunction array = getArray();
+        LinkedListTabulatedFunction firstListOfFunction = firstGetFromFunction();
+        LinkedListTabulatedFunction secondListOfFunction = secondGetFromFunction();
+
+        assertEquals(firstListOfFunction.apply(1), 0.5, DELTA);
+        assertEquals(secondListOfFunction.apply(-9), -4.5, DELTA);
+        assertEquals(array.apply(5), 8.0, DELTA);
+    }
+
 }
