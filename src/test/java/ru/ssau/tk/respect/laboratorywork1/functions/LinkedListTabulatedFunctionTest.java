@@ -34,7 +34,6 @@ public class LinkedListTabulatedFunctionTest {
     }
 
 
-
     @Test
     public void testAddNode() {
         LinkedListTabulatedFunction array = createFromArray();
