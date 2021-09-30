@@ -2,13 +2,6 @@ package ru.ssau.tk.respect.laboratorywork1.functions;
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
 
-    protected static class Node {
-        public Node next;
-        public Node prev;
-        public double x;
-        public double y;
-    }
-
     private Node head;
     private Node last;
     private final int count;
