@@ -14,7 +14,7 @@ public class LinkedListTabulatedFunctionTest {
     private final MathFunction secondFunction = new TanFunction();
 
     private LinkedListTabulatedFunction createFirstFunction() {
-        return new LinkedListTabulatedFunction(firstFunction, 2, 6, 15);
+        return new LinkedListTabulatedFunction(firstFunction, 2, 6, 5);
     }
 
     private LinkedListTabulatedFunction createSecondFunction() {
@@ -49,7 +49,7 @@ public class LinkedListTabulatedFunctionTest {
         LinkedListTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.getCount(), 5);
-        assertEquals(firstListOfFunction.getCount(), 15);
+        assertEquals(firstListOfFunction.getCount(), 5);
         assertEquals(secondListOfFunction.getCount(), 30);
         assertEquals(thirdListOfFunction.getCount(), 60);
     }
@@ -149,7 +149,7 @@ public class LinkedListTabulatedFunctionTest {
         LinkedListTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.floorIndexOfX(4.0), 1);
-        assertEquals(firstListOfFunction.floorIndexOfX(4.0), 7);
+        assertEquals(firstListOfFunction.floorIndexOfX(4.0), 1);
         assertEquals(secondListOfFunction.floorIndexOfX(0.0), 16);
         assertEquals(thirdListOfFunction.floorIndexOfX(15.0), 16);
     }
@@ -215,11 +215,16 @@ public class LinkedListTabulatedFunctionTest {
     public void testApply() {
         LinkedListTabulatedFunction array = createFromArray();
         LinkedListTabulatedFunction firstListOfFunction = createFirstFunction();
-        LinkedListTabulatedFunction secondListOfFunction = createSecondFunction();
 
-        assertEquals(firstListOfFunction.apply(1), 0.5, DELTA);
-        assertEquals(secondListOfFunction.apply(-9), -4.5, DELTA);
-        assertEquals(array.apply(5), 8.0, DELTA);
+        assertEquals(array.apply(-5), -2, DELTA);
+        assertEquals(array.apply(15), 18, DELTA);
+        assertEquals(array.apply(5), 8, DELTA);
+        assertEquals(array.apply(1.4), 4.4, DELTA);
+
+        assertEquals(firstListOfFunction.apply(-4), -2.0, DELTA);
+        assertEquals(firstListOfFunction.apply(8), 4.0, DELTA);
+        assertEquals(firstListOfFunction.apply(3), 1.5, DELTA);
+        assertEquals(firstListOfFunction.apply(5.5), 2.75, DELTA);
     }
 
 }

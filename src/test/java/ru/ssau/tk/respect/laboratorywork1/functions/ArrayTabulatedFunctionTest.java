@@ -6,7 +6,6 @@ import static org.testng.Assert.*;
 
 public class ArrayTabulatedFunctionTest {
     private final static double DELTA = 0.0001;
-    private final int count = 5;
 
     private final double[] xValues = new double[]{1, 3, 5, 7, 9};
     private final double[] yValues = new double[]{4, 6, 8, 10, 12};
@@ -14,7 +13,7 @@ public class ArrayTabulatedFunctionTest {
     private final MathFunction function = new HalfFunction();
 
     private ArrayTabulatedFunction createFirstFunction() {
-        return new ArrayTabulatedFunction(function, 2, 6, 15);
+        return new ArrayTabulatedFunction(function, 2, 6, 5);
     }
 
     private ArrayTabulatedFunction createSecondFunction() {
@@ -37,7 +36,7 @@ public class ArrayTabulatedFunctionTest {
         ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.getCount(), 5);
-        assertEquals(firstListOfFunction.getCount(), 15);
+        assertEquals(firstListOfFunction.getCount(), 5);
         assertEquals(secondListOfFunction.getCount(), 30);
         assertEquals(thirdListOfFunction.getCount(), 60);
     }
@@ -136,7 +135,7 @@ public class ArrayTabulatedFunctionTest {
         ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.floorIndexOfX(4.0), 1);
-        assertEquals(firstListOfFunction.floorIndexOfX(4.0), 7);
+        assertEquals(firstListOfFunction.floorIndexOfX(4.0), 2);
         assertEquals(secondListOfFunction.floorIndexOfX(0.0), 16);
         assertEquals(thirdListOfFunction.floorIndexOfX(15.0), 16);
     }
@@ -178,5 +177,21 @@ public class ArrayTabulatedFunctionTest {
         assertEquals(firstListOfFunction.interpolate(4.0, 2), 2.0);
         assertEquals(secondListOfFunction.interpolate(0.0, 3), 0.0);
         assertEquals(thirdListOfFunction.interpolate(15.0, 2), 7.5);
+    }
+
+    @Test
+    public void testApply() {
+        ArrayTabulatedFunction array = createFromArray();
+        ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+
+        assertEquals(array.apply(-5), -2, DELTA);
+        assertEquals(array.apply(15), 18, DELTA);
+        assertEquals(array.apply(5), 8, DELTA);
+        assertEquals(array.apply(1.4), 4.4, DELTA);
+
+        assertEquals(firstListOfFunction.apply(-4), -2.0, DELTA);
+        assertEquals(firstListOfFunction.apply(8), 4.0, DELTA);
+        assertEquals(firstListOfFunction.apply(3), 1.5, DELTA);
+        assertEquals(firstListOfFunction.apply(5.5), 2.75, DELTA);
     }
 }
