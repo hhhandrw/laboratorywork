@@ -3,24 +3,22 @@ package ru.ssau.tk.respect.laboratorywork1.functions;
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
 
     private Node head;
-    private Node last;
-    private final int count;
 
     protected void addNode(double x, double y) {
         Node node = new Node();
         node.x = x;
         node.y = y;
+        count++;
         if (head == null) {
             head = node;
             node.prev = node;
             node.next = node;
         } else {
-            last.next = node;
+            head.prev.next = node;
             head.prev = node;
-            node.prev = last;
+            node.prev = head.prev;
             node.next = head;
         }
-        last = node;
     }
 
     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
@@ -31,12 +29,12 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-        this.count = count;
         double step = (xTo - xFrom) / (count - 1);
         for (int i = 0; i < count; i++) {
             addNode(xFrom, source.apply(xFrom));
             xFrom += step;
         }
+        this.count = count;
     }
 
     public int getCount() {
@@ -48,31 +46,16 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     public double rightBound() {
-        return last.x;
+        return head.prev.x;
     }
 
     private Node getNode(int index) {
-        Node needNode;
-        if (index < count / 2) {
-            needNode = head;
-            for (int i = 0; i <= count / 2; i++) {
-                if (i == index) {
-                    return needNode;
-                } else {
-                    needNode = needNode.next;
-                }
-            }
-        } else {
-            needNode = last;
-            for (int i = count - 1; i >= count / 2; i--) {
-                if (i == index) {
-                    return needNode;
-                } else {
-                    needNode = needNode.prev;
-                }
-            }
+        Node node;
+        node = this.head;
+        for (int i = 0; i < index; i++) {
+            node = node.next;
         }
-        return null;
+        return node;
     }
 
     @Override
@@ -128,21 +111,21 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     protected double extrapolateLeft(double x) {
-        if (head.x == last.x) {
+        if (head.x == head.prev.x) {
             return head.y;
         }
         return interpolate(x, head.x, head.next.x, head.y, head.next.y);
     }
 
     protected double extrapolateRight(double x) {
-        if (head.x == last.x) {
+        if (head.x == head.prev.x) {
             return head.y;
         }
-        return interpolate(x, last.prev.x, last.x, last.prev.y, last.y);
+        return interpolate(x, count - 1);
     }
 
     protected double interpolate(double x, int floorIndex) {
-        if (head.x == last.x) {
+        if (head.x == head.prev.x) {
             return head.y;
         }
         Node node = getNode(floorIndex);
@@ -162,7 +145,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
                 return node.prev;
             }
         }
-        return last;
+        return head.prev;
     }
 
     public double apply(double x) {
