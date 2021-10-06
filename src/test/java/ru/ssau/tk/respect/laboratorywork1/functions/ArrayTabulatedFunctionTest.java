@@ -13,11 +13,11 @@ public class ArrayTabulatedFunctionTest {
     private final MathFunction function = new HalfFunction();
 
     private ArrayTabulatedFunction createFirstFunction() {
-        return new ArrayTabulatedFunction(function, 2, 6, 5);
+        return new ArrayTabulatedFunction(function, 2, 6, 9);
     }
 
     private ArrayTabulatedFunction createSecondFunction() {
-        return new ArrayTabulatedFunction(function, -5, 4, 30);
+        return new ArrayTabulatedFunction(function, -5, 4, 19);
     }
 
     private ArrayTabulatedFunction createThirdFunction() {
@@ -36,8 +36,8 @@ public class ArrayTabulatedFunctionTest {
         ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.getCount(), 5);
-        assertEquals(firstListOfFunction.getCount(), 5);
-        assertEquals(secondListOfFunction.getCount(), 30);
+        assertEquals(firstListOfFunction.getCount(), 9);
+        assertEquals(secondListOfFunction.getCount(), 19);
         assertEquals(thirdListOfFunction.getCount(), 60);
     }
 
@@ -50,7 +50,7 @@ public class ArrayTabulatedFunctionTest {
 
         assertEquals(array.getX(1), 3.0);
         assertEquals(firstListOfFunction.getX(0), 2.0);
-        assertEquals(secondListOfFunction.getX(5), -3.4482, DELTA);
+        assertEquals(secondListOfFunction.getX(5), -2.5, DELTA);
         assertEquals(thirdListOfFunction.getX(7), 13.8305, DELTA);
     }
 
@@ -63,7 +63,7 @@ public class ArrayTabulatedFunctionTest {
 
         assertEquals(array.getY(3), 10.0);
         assertEquals(firstListOfFunction.getY(0), 1.0);
-        assertEquals(secondListOfFunction.getY(5), -1.7241, DELTA);
+        assertEquals(secondListOfFunction.getY(5), -1.25, DELTA);
         assertEquals(thirdListOfFunction.getY(7), 6.9152, DELTA);
     }
 
@@ -132,12 +132,10 @@ public class ArrayTabulatedFunctionTest {
         ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
         ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
-        ArrayTabulatedFunction thirdListOfFunction = createThirdFunction();
 
         assertEquals(array.floorIndexOfX(4.0), 1);
-        assertEquals(firstListOfFunction.floorIndexOfX(4.0), 2);
-        assertEquals(secondListOfFunction.floorIndexOfX(0.0), 16);
-        assertEquals(thirdListOfFunction.floorIndexOfX(15.0), 16);
+        assertEquals(firstListOfFunction.floorIndexOfX(4.0), 4);
+        assertEquals(secondListOfFunction.floorIndexOfX(0.0), 10);
     }
 
     @Test
@@ -183,6 +181,7 @@ public class ArrayTabulatedFunctionTest {
     public void testApply() {
         ArrayTabulatedFunction array = createFromArray();
         ArrayTabulatedFunction firstListOfFunction = createFirstFunction();
+        ArrayTabulatedFunction secondListOfFunction = createSecondFunction();
 
         assertEquals(array.apply(-5), -2, DELTA);
         assertEquals(array.apply(15), 18, DELTA);
@@ -190,8 +189,13 @@ public class ArrayTabulatedFunctionTest {
         assertEquals(array.apply(1.4), 4.4, DELTA);
 
         assertEquals(firstListOfFunction.apply(-4), -2.0, DELTA);
-        assertEquals(firstListOfFunction.apply(8), 4.0, DELTA);
+        assertEquals(firstListOfFunction.apply(16), 8.0, DELTA);
         assertEquals(firstListOfFunction.apply(3), 1.5, DELTA);
-        assertEquals(firstListOfFunction.apply(5.5), 2.75, DELTA);
+        assertEquals(firstListOfFunction.apply(5.3), 2.65, DELTA);
+
+        assertEquals(secondListOfFunction.apply(-10), -5, DELTA);
+        assertEquals(secondListOfFunction.apply(8), 4, DELTA);
+        assertEquals(secondListOfFunction.apply(-2), -1, DELTA);
+        assertEquals(secondListOfFunction.apply(-2.1), -1.05, DELTA);
     }
 }

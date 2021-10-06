@@ -104,7 +104,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
             if (node.x < x) {
                 node = node.next;
             } else {
-                return i - 1;
+                return i;
             }
         }
         return getCount();
