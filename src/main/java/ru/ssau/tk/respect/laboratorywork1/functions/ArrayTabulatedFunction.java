@@ -5,7 +5,8 @@ import java.util.Arrays;
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     private final double[] xValues;
     private final double[] yValues;
-    private final int count;
+    private int count;
+    private Node head;
 
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
         count = xValues.length;
@@ -24,6 +25,23 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
             j += step;
         }
         this.count = count;
+    }
+
+    public void addNode(double x, double y) {
+        Node node = new Node();
+        node.x = x;
+        node.y = y;
+        count++;
+        if (head == null) {
+            head = node;
+            node.prev = node;
+            node.next = node;
+        } else {
+            head.prev.next = node;
+            head.prev = node;
+            node.prev = head.prev;
+            node.next = head;
+        }
     }
 
     @Override
@@ -73,7 +91,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     @Override
-    protected int floorIndexOfX(double x) {
+    public int floorIndexOfX(double x) {
         if (x > rightBound()) {
             return count - 1;
         } else if (x < leftBound()) {
@@ -85,7 +103,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     @Override
-    protected double extrapolateLeft(double x) {
+    public double extrapolateLeft(double x) {
         if (count == 1) {
             return yValues[0];
         }
@@ -93,7 +111,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     @Override
-    protected double extrapolateRight(double x) {
+    public double extrapolateRight(double x) {
         if (count == 1) {
             return yValues[0];
         }
@@ -101,7 +119,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     @Override
-    protected double interpolate(double x, int floorIndex) {
+    public double interpolate(double x, int floorIndex) {
         if (count == 1) {
             return yValues[0];
         }

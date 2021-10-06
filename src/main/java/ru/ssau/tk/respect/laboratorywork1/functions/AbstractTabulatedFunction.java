@@ -3,13 +3,13 @@ package ru.ssau.tk.respect.laboratorywork1.functions;
 public abstract class AbstractTabulatedFunction implements TabulatedFunction {
     protected int count;
 
-    protected abstract int floorIndexOfX(double x);
+    public abstract int floorIndexOfX(double x);
 
-    protected abstract double extrapolateLeft(double x);
+    public abstract double extrapolateLeft(double x);
 
-    protected abstract double extrapolateRight(double x);
+    public abstract double extrapolateRight(double x);
 
-    protected abstract double interpolate(double x, int floorIndex);
+    public abstract double interpolate(double x, int floorIndex);
 
     protected double interpolate(double x, double leftX, double rightX, double leftY, double rightY) {
         return leftY + (rightY - leftY) / (rightX - leftX) * (x - leftX);

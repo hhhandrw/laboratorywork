@@ -4,7 +4,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
 
     private Node head;
 
-    protected void addNode(double x, double y) {
+    public void addNode(double x, double y) {
         Node node = new Node();
         node.x = x;
         node.y = y;
@@ -110,21 +110,21 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
         return getCount();
     }
 
-    protected double extrapolateLeft(double x) {
+    public double extrapolateLeft(double x) {
         if (head.x == head.prev.x) {
             return head.y;
         }
         return interpolate(x, head.x, head.next.x, head.y, head.next.y);
     }
 
-    protected double extrapolateRight(double x) {
+    public double extrapolateRight(double x) {
         if (head.x == head.prev.x) {
             return head.y;
         }
         return interpolate(x, count - 1);
     }
 
-    protected double interpolate(double x, int floorIndex) {
+    public double interpolate(double x, int floorIndex) {
         if (head.x == head.prev.x) {
             return head.y;
         }
