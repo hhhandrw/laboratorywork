@@ -4,6 +4,20 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
 
     private Node head;
 
+    public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
+        for (int i = 0; i < xValues.length; i++) {
+            this.addNode(xValues[i], yValues[i]);
+        }
+    }
+
+    public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
+        double step = (xTo - xFrom) / (count - 1);
+        for (int i = 0; i < count; i++) {
+            addNode(xFrom, source.apply(xFrom));
+            xFrom += step;
+        }
+    }
+
     public void addNode(double x, double y) {
         Node node = new Node();
         node.x = x;
@@ -19,22 +33,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
             node.prev = head.prev;
             node.next = head;
         }
-    }
-
-    public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
-        for (int i = 0; i < xValues.length; i++) {
-            this.addNode(xValues[i], yValues[i]);
-        }
-        this.count = xValues.length;
-    }
-
-    public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-        double step = (xTo - xFrom) / (count - 1);
-        for (int i = 0; i < count; i++) {
-            addNode(xFrom, source.apply(xFrom));
-            xFrom += step;
-        }
-        this.count = count;
     }
 
     public int getCount() {

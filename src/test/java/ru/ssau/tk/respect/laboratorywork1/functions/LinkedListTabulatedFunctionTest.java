@@ -35,7 +35,7 @@ public class LinkedListTabulatedFunctionTest {
 
     @Test
     public void testAddNode() {
-        TabulatedFunction array = createFromArray();
+        LinkedListTabulatedFunction array = (LinkedListTabulatedFunction) createFromArray();
         array.addNode(10, 111);
 
         assertEquals(array.rightBound(), 10.0);
@@ -230,5 +230,4 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(secondListOfFunction.apply(-2), -1, DELTA);
         assertEquals(secondListOfFunction.apply(-2.1), -1.05, DELTA);
     }
-
 }

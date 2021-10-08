@@ -5,8 +5,7 @@ import java.util.Arrays;
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     private final double[] xValues;
     private final double[] yValues;
-    private int count;
-    private Node head;
+    private final int count;
 
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
         count = xValues.length;
@@ -25,23 +24,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
             j += step;
         }
         this.count = count;
-    }
-
-    public void addNode(double x, double y) {
-        Node node = new Node();
-        node.x = x;
-        node.y = y;
-        count++;
-        if (head == null) {
-            head = node;
-            node.prev = node;
-            node.next = node;
-        } else {
-            head.prev.next = node;
-            head.prev = node;
-            node.prev = head.prev;
-            node.next = head;
-        }
     }
 
     @Override
