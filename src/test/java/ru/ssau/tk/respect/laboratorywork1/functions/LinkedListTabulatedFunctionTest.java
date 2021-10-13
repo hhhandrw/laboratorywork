@@ -305,25 +305,33 @@ public class LinkedListTabulatedFunctionTest {
         Iterator<Point> functionIterator = firstListOfFunction.iterator();
 
         int a = 0;
+        int b = 0;
         while (arrayIterator.hasNext()) {
             Point point = arrayIterator.next();
             assertEquals(point.x, array.getX(a++));
-        }
-
-        int b = 0;
-        while (functionIterator.hasNext()) {
-            Point point = functionIterator.next();
-            assertEquals(point.x, firstListOfFunction.getX(b++));
+            assertEquals(point.y, array.getY(b++));
         }
 
         int c = 0;
-        for (Point point : array) {
-            assertEquals(point.x, array.getX(c++));
+        int d = 0;
+        while (functionIterator.hasNext()) {
+            Point point = functionIterator.next();
+            assertEquals(point.x, firstListOfFunction.getX(c++));
+            assertEquals(point.y, firstListOfFunction.getY(d++));
         }
 
-        int d = 0;
+        int e = 0;
+        int f = 0;
+        for (Point point : array) {
+            assertEquals(point.x, array.getX(e++));
+            assertEquals(point.y, array.getY(f++));
+        }
+
+        int g = 0;
+        int h = 0;
         for (Point point : firstListOfFunction) {
-            assertEquals(point.x, firstListOfFunction.getX(d++));
+            assertEquals(point.x, firstListOfFunction.getX(g++));
+            assertEquals(point.y, firstListOfFunction.getY(h++));
         }
     }
 }
