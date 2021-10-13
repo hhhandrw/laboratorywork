@@ -1,5 +1,7 @@
 package ru.ssau.tk.respect.laboratorywork1.functions;
 
+import java.util.Iterator;
+
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
 
     private Node head;
@@ -180,4 +182,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
         }
     }
 
+    public Iterator<Point> iterator() {
+        throw new UnsupportedOperationException();
+    }
 }
