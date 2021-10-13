@@ -10,11 +10,11 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     private final int count;
 
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
+        checkLengthIsTheSame(xValues, yValues);
+        checkSorted(xValues);
         count = xValues.length;
         this.xValues = Arrays.copyOf(xValues, count);
         this.yValues = Arrays.copyOf(yValues, count);
-        checkSorted(xValues);
-        checkLengthIsTheSame(xValues, yValues);
     }
 
     public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {

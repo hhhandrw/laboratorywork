@@ -1,6 +1,9 @@
 package ru.ssau.tk.respect.laboratorywork1.functions;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import ru.ssau.tk.respect.laboratorywork1.exceptions.ArrayIsNotSortedException;
+import ru.ssau.tk.respect.laboratorywork1.exceptions.DifferentLengthOfArraysException;
 
 import java.util.Iterator;
 
@@ -28,6 +31,20 @@ public class ArrayTabulatedFunctionTest {
 
     private TabulatedFunction createFromArray() {
         return new ArrayTabulatedFunction(xValues, yValues);
+    }
+
+    @Test
+    public void testConstructorExceptions() {
+        Assert.assertThrows(DifferentLengthOfArraysException.class, () -> {
+            double[] xValues = new double[]{1, 3, 5, 7};
+            double[] yValues = new double[]{4, 6, 8};
+            new ArrayTabulatedFunction(xValues, yValues);
+        });
+        Assert.assertThrows(ArrayIsNotSortedException.class, () -> {
+            double[] xValues = new double[]{1, 3, 10, 5, 7};
+            double[] yValues = new double[]{4, 6, 8, 10, 12};
+            new ArrayTabulatedFunction(xValues, yValues);
+        });
     }
 
     @Test

@@ -4,6 +4,8 @@ import static org.testng.Assert.*;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import ru.ssau.tk.respect.laboratorywork1.exceptions.ArrayIsNotSortedException;
+import ru.ssau.tk.respect.laboratorywork1.exceptions.DifferentLengthOfArraysException;
 
 import java.util.Iterator;
 
@@ -45,6 +47,16 @@ public class LinkedListTabulatedFunctionTest {
         });
         Assert.assertThrows(IllegalArgumentException.class, () -> new LinkedListTabulatedFunction(firstFunction, 2, 6, 1));
         Assert.assertThrows(IllegalArgumentException.class, () -> new LinkedListTabulatedFunction(firstFunction, 6, 2, 9));
+        Assert.assertThrows(DifferentLengthOfArraysException.class, () -> {
+            double[] xValues = new double[]{1, 3, 5, 7};
+            double[] yValues = new double[]{4, 6, 8};
+            new LinkedListTabulatedFunction(xValues, yValues);
+        });
+        Assert.assertThrows(ArrayIsNotSortedException.class, () -> {
+            double[] xValues = new double[]{1, 3, 10, 5, 7};
+            double[] yValues = new double[]{4, 6, 8, 10, 12};
+            new LinkedListTabulatedFunction(xValues, yValues);
+        });
     }
 
     @Test

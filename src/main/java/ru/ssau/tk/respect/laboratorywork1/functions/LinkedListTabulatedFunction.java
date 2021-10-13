@@ -1,5 +1,7 @@
 package ru.ssau.tk.respect.laboratorywork1.functions;
 
+import ru.ssau.tk.respect.laboratorywork1.exceptions.InterpolationException;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -18,6 +20,8 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
         if (xValues.length < 2) {
             throw new IllegalArgumentException("Length is less than permissible");
         }
+        checkLengthIsTheSame(xValues, yValues);
+        checkSorted(xValues);
         for (int i = 0; i < xValues.length; i++) {
             this.addNode(xValues[i], yValues[i]);
         }
@@ -150,7 +154,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
     public double interpolate(double x, int floorIndex) {
         Node node = getNode(floorIndex);
         Node nodeNext = node.next;
-        return interpolate(x, node.x, nodeNext.x, node.y, nodeNext.y);
+            return interpolate(x, node.x, nodeNext.x, node.y, nodeNext.y);
     }
 
     protected Node floorNodeOfX(double x) {
@@ -182,6 +186,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
             }
         }
     }
+
     public Iterator<Point> iterator() {
         return new Iterator<Point>() {
             Node node = head;
