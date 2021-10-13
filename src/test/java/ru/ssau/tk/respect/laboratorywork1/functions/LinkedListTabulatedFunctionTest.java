@@ -5,6 +5,8 @@ import static org.testng.Assert.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Iterator;
+
 public class LinkedListTabulatedFunctionTest {
     private final static double DELTA = 0.0001;
 
@@ -243,7 +245,7 @@ public class LinkedListTabulatedFunctionTest {
     }
 
     @Test
-    public void testFloorNodeOfX () {
+    public void testFloorNodeOfX() {
         LinkedListTabulatedFunction array = (LinkedListTabulatedFunction) createFromArray();
         LinkedListTabulatedFunction firstListOfFunction = (LinkedListTabulatedFunction) createFirstFunction();
 
@@ -292,5 +294,36 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(secondListOfFunction.apply(8), 4, DELTA);
         assertEquals(secondListOfFunction.apply(-2), -1, DELTA);
         assertEquals(secondListOfFunction.apply(-2.1), -1.05, DELTA);
+    }
+
+    @Test
+    public void testIterator() {
+        TabulatedFunction array = createFromArray();
+        Iterator<Point> arrayIterator = array.iterator();
+
+        TabulatedFunction firstListOfFunction = createFirstFunction();
+        Iterator<Point> functionIterator = firstListOfFunction.iterator();
+
+        int a = 0;
+        while (arrayIterator.hasNext()) {
+            Point point = arrayIterator.next();
+            assertEquals(point.x, array.getX(a++));
+        }
+
+        int b = 0;
+        while (functionIterator.hasNext()) {
+            Point point = functionIterator.next();
+            assertEquals(point.x, firstListOfFunction.getX(b++));
+        }
+
+        int c = 0;
+        for (Point point : array) {
+            assertEquals(point.x, array.getX(c++));
+        }
+
+        int d = 0;
+        for (Point point : firstListOfFunction) {
+            assertEquals(point.x, firstListOfFunction.getX(d++));
+        }
     }
 }

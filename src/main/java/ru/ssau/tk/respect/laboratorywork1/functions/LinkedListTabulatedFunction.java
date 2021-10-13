@@ -189,12 +189,12 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
 
             @Override
             public boolean hasNext() {
-                return node == null;
+                return node != null;
             }
 
             @Override
             public Point next() {
-                if (hasNext()) {
+                if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
                 Point point = new Point(node.x, node.y);
