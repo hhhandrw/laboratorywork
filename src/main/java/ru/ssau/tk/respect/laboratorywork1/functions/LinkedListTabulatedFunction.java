@@ -154,7 +154,10 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
     public double interpolate(double x, int floorIndex) {
         Node node = getNode(floorIndex);
         Node nodeNext = node.next;
-        return interpolate(x, node.x, nodeNext.x, node.y, nodeNext.y);
+        /*if (x < node.x || x > nodeNext.x) {
+            throw new InterpolationException();
+        }*/
+            return interpolate(x, node.x, nodeNext.x, node.y, nodeNext.y);
     }
 
     protected Node floorNodeOfX(double x) {

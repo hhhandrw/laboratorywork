@@ -237,7 +237,7 @@ public class LinkedListTabulatedFunctionTest {
         TabulatedFunction secondListOfFunction = createSecondFunction();
         TabulatedFunction thirdListOfFunction = createThirdFunction();
 
-        assertEquals(array.extrapolateRight(10), 13.0);
+        assertEquals(array.extrapolateRight(9.2), 13.0);
         assertEquals(firstListOfFunction.extrapolateRight(7.0), 3.5);
         assertEquals(secondListOfFunction.extrapolateRight(5.0), 2.5);
         assertEquals(thirdListOfFunction.extrapolateRight(30.0), 15.0);
@@ -248,12 +248,10 @@ public class LinkedListTabulatedFunctionTest {
         TabulatedFunction array = createFromArray();
         TabulatedFunction firstListOfFunction = createFirstFunction();
         TabulatedFunction secondListOfFunction = createSecondFunction();
-        TabulatedFunction thirdListOfFunction = createThirdFunction();
 
-        assertEquals(array.interpolate(4.0, 1), 7.0);
-        assertEquals(firstListOfFunction.interpolate(4.0, 2), 2.0);
-        assertEquals(secondListOfFunction.interpolate(0.0, 3), 0.0);
-        assertEquals(thirdListOfFunction.interpolate(15.0, 2), 7.5);
+        assertEquals(array.interpolate(3.0, 1), 6.0);
+        assertEquals(firstListOfFunction.interpolate(3.2, 2), 1.6);
+        assertEquals(secondListOfFunction.interpolate(-3.3, 3), -1.65);
     }
 
     @Test
