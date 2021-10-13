@@ -237,7 +237,7 @@ public class LinkedListTabulatedFunctionTest {
         TabulatedFunction secondListOfFunction = createSecondFunction();
         TabulatedFunction thirdListOfFunction = createThirdFunction();
 
-        assertEquals(array.extrapolateRight(10.0), 13.0);
+        assertEquals(array.extrapolateRight(10), 13.0);
         assertEquals(firstListOfFunction.extrapolateRight(7.0), 3.5);
         assertEquals(secondListOfFunction.extrapolateRight(5.0), 2.5);
         assertEquals(thirdListOfFunction.extrapolateRight(30.0), 15.0);
