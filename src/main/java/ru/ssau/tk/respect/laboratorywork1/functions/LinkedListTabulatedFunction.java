@@ -63,7 +63,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
         return head.prev.x;
     }
 
-    private Node getNode(int index) {
+    Node getNode(int index) {
         if (index < 0 || index > count - 1) {
             throw new IllegalArgumentException("Index is out of bounds");
         }
