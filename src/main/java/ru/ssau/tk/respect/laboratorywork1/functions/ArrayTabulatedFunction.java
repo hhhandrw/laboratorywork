@@ -1,5 +1,7 @@
 package ru.ssau.tk.respect.laboratorywork1.functions;
 
+import ru.ssau.tk.respect.laboratorywork1.exceptions.InterpolationException;
+
 import java.util.Arrays;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
@@ -11,6 +13,8 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         count = xValues.length;
         this.xValues = Arrays.copyOf(xValues, count);
         this.yValues = Arrays.copyOf(yValues, count);
+        checkSorted(xValues);
+        checkLengthIsTheSame(xValues, yValues);
     }
 
     public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
@@ -89,7 +93,8 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         if (count == 1) {
             return yValues[0];
         }
-        return interpolate(x, 0);
+        return interpolate(x, xValues[0], xValues[1],
+                yValues[0], yValues[1]);
     }
 
     @Override
@@ -97,13 +102,17 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         if (count == 1) {
             return yValues[0];
         }
-        return interpolate(x, count - 2);
+        return interpolate(x, xValues[count - 2], xValues[count - 1],
+                yValues[count - 2], yValues[count - 1]);
     }
 
     @Override
     public double interpolate(double x, int floorIndex) {
         if (count == 1) {
             return yValues[0];
+        }
+        if (xValues[floorIndex] < leftBound() || xValues[floorIndex] > rightBound() || xValues[floorIndex + 1] > rightBound()) {
+            throw new InterpolationException();
         }
         return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1],
                 yValues[floorIndex], yValues[floorIndex + 1]);
