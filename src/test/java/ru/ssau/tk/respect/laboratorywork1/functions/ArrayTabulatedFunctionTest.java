@@ -2,6 +2,8 @@ package ru.ssau.tk.respect.laboratorywork1.functions;
 
 import org.testng.annotations.Test;
 
+import java.util.Iterator;
+
 import static org.testng.Assert.*;
 
 public class ArrayTabulatedFunctionTest {
@@ -197,5 +199,44 @@ public class ArrayTabulatedFunctionTest {
         assertEquals(secondListOfFunction.apply(8), 4, DELTA);
         assertEquals(secondListOfFunction.apply(-2), -1, DELTA);
         assertEquals(secondListOfFunction.apply(-2.1), -1.05, DELTA);
+    }
+
+    @Test
+    public void testIterator() {
+        TabulatedFunction array = createFromArray();
+        Iterator<Point> arrayIterator = array.iterator();
+
+        TabulatedFunction firstListOfFunction = createFirstFunction();
+        Iterator<Point> functionIterator = firstListOfFunction.iterator();
+
+        int a = 0;
+        int b = 0;
+        while (arrayIterator.hasNext()) {
+            Point point = arrayIterator.next();
+            assertEquals(point.x, array.getX(a++));
+            assertEquals(point.y, array.getY(b++));
+        }
+
+        int c = 0;
+        int d = 0;
+        while (functionIterator.hasNext()) {
+            Point point = functionIterator.next();
+            assertEquals(point.x, firstListOfFunction.getX(c++));
+            assertEquals(point.y, firstListOfFunction.getY(d++));
+        }
+
+        int e = 0;
+        int f = 0;
+        for (Point point : array) {
+            assertEquals(point.x, array.getX(e++));
+            assertEquals(point.y, array.getY(f++));
+        }
+
+        int g = 0;
+        int h = 0;
+        for (Point point : firstListOfFunction) {
+            assertEquals(point.x, firstListOfFunction.getX(g++));
+            assertEquals(point.y, firstListOfFunction.getY(h++));
+        }
     }
 }

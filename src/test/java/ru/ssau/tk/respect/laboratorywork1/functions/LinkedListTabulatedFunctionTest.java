@@ -2,7 +2,10 @@ package ru.ssau.tk.respect.laboratorywork1.functions;
 
 import static org.testng.Assert.*;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.Iterator;
 
 public class LinkedListTabulatedFunctionTest {
     private final static double DELTA = 0.0001;
@@ -31,6 +34,17 @@ public class LinkedListTabulatedFunctionTest {
 
     private TabulatedFunction createFromArray() {
         return new LinkedListTabulatedFunction(xValues, yValues);
+    }
+
+    @Test
+    public void testConstructorExceptions() {
+        Assert.assertThrows(IllegalArgumentException.class, () -> {
+            double[] xValues = new double[]{1};
+            double[] yValues = new double[]{4};
+            new LinkedListTabulatedFunction(xValues, yValues);
+        });
+        Assert.assertThrows(IllegalArgumentException.class, () -> new LinkedListTabulatedFunction(firstFunction, 2, 6, 1));
+        Assert.assertThrows(IllegalArgumentException.class, () -> new LinkedListTabulatedFunction(firstFunction, 6, 2, 9));
     }
 
     @Test
@@ -81,17 +95,40 @@ public class LinkedListTabulatedFunctionTest {
     }
 
     @Test
+    public void testGetNode() {
+        LinkedListTabulatedFunction array = (LinkedListTabulatedFunction) createFromArray();
+        LinkedListTabulatedFunction firstListOfFunction = (LinkedListTabulatedFunction) createFirstFunction();
+
+        assertEquals(array.getNode(2).x, 5.0);
+        assertEquals(array.getNode(2).y, 8.0);
+        assertEquals(firstListOfFunction.getNode(0).x, 2.0);
+        assertEquals(firstListOfFunction.getNode(0).y, 1.0);
+        assertEquals(firstListOfFunction.getNode(1).x, 2.5);
+        assertEquals(firstListOfFunction.getNode(1).y, 1.25);
+
+        Assert.assertThrows(IllegalArgumentException.class, () -> array.getNode(-2));
+        Assert.assertThrows(IllegalArgumentException.class, () -> array.getNode(10));
+        Assert.assertThrows(IllegalArgumentException.class, () -> firstListOfFunction.getNode(-3));
+        Assert.assertThrows(IllegalArgumentException.class, () -> firstListOfFunction.getNode(9));
+        Assert.assertThrows(IllegalArgumentException.class, () -> firstListOfFunction.getNode(15));
+    }
+
+    @Test
     public void testGetX() {
         TabulatedFunction array = createFromArray();
         TabulatedFunction firstListOfFunction = createFirstFunction();
         TabulatedFunction secondListOfFunction = createSecondFunction();
         TabulatedFunction thirdListOfFunction = createThirdFunction();
 
+        assertEquals(array.getX(1), 3.0);
         assertEquals(firstListOfFunction.getX(0), 2.0);
         assertEquals(secondListOfFunction.getX(5), -2.5, DELTA);
         assertEquals(thirdListOfFunction.getX(7), 13.8305, DELTA);
 
-        assertEquals(array.getX(1), 3.0);
+        Assert.assertThrows(IllegalArgumentException.class, () -> array.getX(-1));
+        Assert.assertThrows(IllegalArgumentException.class, () -> array.getX(10));
+        Assert.assertThrows(IllegalArgumentException.class, () -> firstListOfFunction.getX(-4));
+        Assert.assertThrows(IllegalArgumentException.class, () -> secondListOfFunction.getX(20));
     }
 
     @Test
@@ -105,14 +142,26 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(firstListOfFunction.getY(0), 1.0);
         assertEquals(secondListOfFunction.getY(5), -1.25, DELTA);
         assertEquals(thirdListOfFunction.getY(7), 6.9152, DELTA);
+
+        Assert.assertThrows(IllegalArgumentException.class, () -> array.getY(-1));
+        Assert.assertThrows(IllegalArgumentException.class, () -> array.getY(10));
+        Assert.assertThrows(IllegalArgumentException.class, () -> firstListOfFunction.getY(-4));
+        Assert.assertThrows(IllegalArgumentException.class, () -> secondListOfFunction.getY(20));
     }
 
     @Test
     public void testSetY() {
         TabulatedFunction array = createFromArray();
-        array.setY(3, 40);
+        TabulatedFunction firstListOfFunction = createFirstFunction();
+        TabulatedFunction secondListOfFunction = createSecondFunction();
 
+        array.setY(3, 40);
         assertEquals(array.getY(3), 40, DELTA);
+
+        Assert.assertThrows(IllegalArgumentException.class, () -> array.setY(-1, 5));
+        Assert.assertThrows(IllegalArgumentException.class, () -> array.setY(10, 5));
+        Assert.assertThrows(IllegalArgumentException.class, () -> firstListOfFunction.setY(-4, 5));
+        Assert.assertThrows(IllegalArgumentException.class, () -> secondListOfFunction.setY(20, 5));
     }
 
     @Test
@@ -150,6 +199,10 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(array.floorIndexOfX(3.0), 1);
         assertEquals(firstListOfFunction.floorIndexOfX(4.0), 4);
         assertEquals(secondListOfFunction.floorIndexOfX(0.0), 10);
+
+        Assert.assertThrows(IllegalArgumentException.class, () -> array.floorIndexOfX(-1));
+        Assert.assertThrows(IllegalArgumentException.class, () -> firstListOfFunction.floorIndexOfX(-1));
+        Assert.assertThrows(IllegalArgumentException.class, () -> secondListOfFunction.floorIndexOfX(-15));
     }
 
     @Test
@@ -192,6 +245,18 @@ public class LinkedListTabulatedFunctionTest {
     }
 
     @Test
+    public void testFloorNodeOfX() {
+        LinkedListTabulatedFunction array = (LinkedListTabulatedFunction) createFromArray();
+        LinkedListTabulatedFunction firstListOfFunction = (LinkedListTabulatedFunction) createFirstFunction();
+
+        assertEquals(array.floorIndexOfX(3), 1);
+        assertEquals(firstListOfFunction.floorIndexOfX(3), 2);
+
+        Assert.assertThrows(IllegalArgumentException.class, () -> array.floorNodeOfX(-1));
+        Assert.assertThrows(IllegalArgumentException.class, () -> firstListOfFunction.floorNodeOfX(-1));
+    }
+
+    @Test
     public void testCompositeFunction() {
         MathFunction firstListOfFunction = createFirstFunction();
         MathFunction secondListOfFunction = createSecondFunction();
@@ -229,5 +294,44 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(secondListOfFunction.apply(8), 4, DELTA);
         assertEquals(secondListOfFunction.apply(-2), -1, DELTA);
         assertEquals(secondListOfFunction.apply(-2.1), -1.05, DELTA);
+    }
+
+    @Test
+    public void testIterator() {
+        TabulatedFunction array = createFromArray();
+        Iterator<Point> arrayIterator = array.iterator();
+
+        TabulatedFunction firstListOfFunction = createFirstFunction();
+        Iterator<Point> functionIterator = firstListOfFunction.iterator();
+
+        int a = 0;
+        int b = 0;
+        while (arrayIterator.hasNext()) {
+            Point point = arrayIterator.next();
+            assertEquals(point.x, array.getX(a++));
+            assertEquals(point.y, array.getY(b++));
+        }
+
+        int c = 0;
+        int d = 0;
+        while (functionIterator.hasNext()) {
+            Point point = functionIterator.next();
+            assertEquals(point.x, firstListOfFunction.getX(c++));
+            assertEquals(point.y, firstListOfFunction.getY(d++));
+        }
+
+        int e = 0;
+        int f = 0;
+        for (Point point : array) {
+            assertEquals(point.x, array.getX(e++));
+            assertEquals(point.y, array.getY(f++));
+        }
+
+        int g = 0;
+        int h = 0;
+        for (Point point : firstListOfFunction) {
+            assertEquals(point.x, firstListOfFunction.getX(g++));
+            assertEquals(point.y, firstListOfFunction.getY(h++));
+        }
     }
 }

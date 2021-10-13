@@ -7,13 +7,29 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
 
     private Node head;
 
+    public static class Node {
+        public Node next;
+        public Node prev;
+        public double x;
+        public double y;
+    }
+
     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
+        if (xValues.length < 2) {
+            throw new IllegalArgumentException("Length is less than permissible");
+        }
         for (int i = 0; i < xValues.length; i++) {
             this.addNode(xValues[i], yValues[i]);
         }
     }
 
     public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
+        if (count < 2) {
+            throw new IllegalArgumentException("Length is less than permissible");
+        }
+        if (xFrom >= xTo) {
+            throw new IllegalArgumentException("Incorrect bounds");
+        }
         double step = (xTo - xFrom) / (count - 1);
         for (int i = 0; i < count; i++) {
             addNode(xFrom, source.apply(xFrom));
@@ -50,7 +66,10 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
         return head.prev.x;
     }
 
-    private Node getNode(int index) {
+    Node getNode(int index) {
+        if (index < 0 || index > count - 1) {
+            throw new IllegalArgumentException("Index is out of bounds");
+        }
         Node node;
         node = this.head;
         for (int i = 0; i < index; i++) {
@@ -61,16 +80,25 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
 
     @Override
     public double getX(int index) {
+        if (index < 0 || index > count - 1) {
+            throw new IllegalArgumentException("Index is out of bounds");
+        }
         return getNode(index).x;
     }
 
     @Override
     public double getY(int index) {
+        if (index < 0 || index > count - 1) {
+            throw new IllegalArgumentException("Index is out of bounds");
+        }
         return getNode(index).y;
     }
 
     @Override
     public void setY(int index, double value) {
+        if (index < 0 || index > count - 1) {
+            throw new IllegalArgumentException("Index is out of bounds");
+        }
         getNode(index).y = value;
     }
 
@@ -98,7 +126,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
 
     public int floorIndexOfX(double x) {
         if (x < head.x) {
-            return 0;
+            throw new IllegalArgumentException("x is less than left bound");
         }
         Node node = head;
         for (int i = 0; i <= count; i++) {
@@ -112,23 +140,14 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     public double extrapolateLeft(double x) {
-        if (head.x == head.prev.x) {
-            return head.y;
-        }
         return interpolate(x, head.x, head.next.x, head.y, head.next.y);
     }
 
     public double extrapolateRight(double x) {
-        if (head.x == head.prev.x) {
-            return head.y;
-        }
         return interpolate(x, count - 1);
     }
 
     public double interpolate(double x, int floorIndex) {
-        if (head.x == head.prev.x) {
-            return head.y;
-        }
         Node node = getNode(floorIndex);
         Node nodeNext = node.next;
         return interpolate(x, node.x, nodeNext.x, node.y, nodeNext.y);
@@ -136,8 +155,8 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
 
     protected Node floorNodeOfX(double x) {
         Node node = head;
-        if (node.x > x) {
-            return head;
+        if (x < head.x) {
+            throw new IllegalArgumentException("x is less than left bound");
         }
         for (int i = 0; i < count; i++) {
             if (node.x < x) {
@@ -188,4 +207,29 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
         };
     }
 
+    public Iterator<Point> iterator() {
+        return new Iterator<Point>() {
+            Node node = head;
+
+            @Override
+            public boolean hasNext() {
+                return node != null;
+            }
+
+            @Override
+            public Point next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                Point point = new Point(node.x, node.y);
+                if (node == head.prev) {
+                    node = null;
+                } else {
+                    node = node.next;
+                }
+                return point;
+            }
+        };
+    }
 }
+

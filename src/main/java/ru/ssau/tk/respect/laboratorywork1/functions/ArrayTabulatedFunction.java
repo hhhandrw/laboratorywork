@@ -95,8 +95,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         if (count == 1) {
             return yValues[0];
         }
-        return interpolate(x, xValues[0], xValues[1],
-                yValues[0], yValues[1]);
+        return interpolate(x, 0);
     }
 
     @Override
@@ -104,8 +103,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         if (count == 1) {
             return yValues[0];
         }
-        return interpolate(x, xValues[count - 2], xValues[count - 1],
-                yValues[count - 2], yValues[count - 1]);
+        return interpolate(x, count - 2);
     }
 
     @Override
@@ -113,30 +111,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         if (count == 1) {
             return yValues[0];
         }
-        if (xValues[floorIndex] < leftBound() || xValues[floorIndex] > rightBound() || xValues[floorIndex + 1] > rightBound()) {
-            throw new InterpolationException();
-        }
         return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1],
                 yValues[floorIndex], yValues[floorIndex + 1]);
-    }
-    public Iterator<Point> iterator() {
-        return new Iterator<Point>() {
-            int i = 0;
-
-            @Override
-            public boolean hasNext() {
-                return i < count;
-            }
-
-            @Override
-            public Point next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                Point point = new Point(xValues[i], yValues[i]);
-                i++;
-                return point;
-            }
-        };
     }
 }
