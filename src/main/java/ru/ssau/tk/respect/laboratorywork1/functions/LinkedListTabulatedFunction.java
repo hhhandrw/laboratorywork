@@ -70,12 +70,11 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
         return head.prev.x;
     }
 
-    Node getNode(int index) {
+    protected Node getNode(int index) {
         if (index < 0 || index > count - 1) {
             throw new IllegalArgumentException("Index is out of bounds");
         }
-        Node node;
-        node = this.head;
+        Node node = this.head;
         for (int i = 0; i < index; i++) {
             node = node.next;
         }
@@ -157,7 +156,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
         /*if (x < node.x || x > nodeNext.x) {
             throw new InterpolationException();
         }*/
-            return interpolate(x, node.x, nodeNext.x, node.y, nodeNext.y);
+        return interpolate(x, node.x, nodeNext.x, node.y, nodeNext.y);
     }
 
     protected Node floorNodeOfX(double x) {

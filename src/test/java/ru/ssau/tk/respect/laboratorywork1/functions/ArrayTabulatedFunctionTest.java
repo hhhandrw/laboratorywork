@@ -220,6 +220,9 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testIterator() {
+
+        //TODO: проверить на количество итераций и нормально переименовать переменные
+
         TabulatedFunction array = createFromArray();
         Iterator<Point> arrayIterator = array.iterator();
 
