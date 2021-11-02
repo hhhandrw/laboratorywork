@@ -3,8 +3,6 @@ package ru.ssau.tk.respect.laboratorywork1.operations;
 import org.testng.annotations.Test;
 import ru.ssau.tk.respect.laboratorywork1.functions.*;
 
-import java.util.Iterator;
-
 import static org.testng.Assert.*;
 import static ru.ssau.tk.respect.laboratorywork1.operations.TabulatedFunctionOperationService.asPoints;
 
@@ -37,9 +35,9 @@ public class TabulatedFunctionOperationServiceTest {
         }
 
         int j = 0;
-        for (Point point : firstPoints) {
-            assertEquals(firstFunction.getX(j), point.x);
-            assertEquals(firstFunction.getY(j++), point.y);
+        for (Point point : secondPoints) {
+            assertEquals(secondFunction.getX(j), point.x);
+            assertEquals(secondFunction.getY(j++), point.y);
         }
     }
 }
