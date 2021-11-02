@@ -237,7 +237,7 @@ public class LinkedListTabulatedFunctionTest {
         TabulatedFunction secondListOfFunction = createSecondFunction();
         TabulatedFunction thirdListOfFunction = createThirdFunction();
 
-        assertEquals(array.extrapolateRight(9.2), 13.0);
+        assertEquals(array.extrapolateRight(9.2), 12.2);
         assertEquals(firstListOfFunction.extrapolateRight(7.0), 3.5);
         assertEquals(secondListOfFunction.extrapolateRight(5.0), 2.5);
         assertEquals(thirdListOfFunction.extrapolateRight(30.0), 15.0);
@@ -308,40 +308,48 @@ public class LinkedListTabulatedFunctionTest {
 
     @Test
     public void testIterator() {
-        TabulatedFunction array = createFromArray();
-        Iterator<Point> arrayIterator = array.iterator();
+        TabulatedFunction firstFunction = createFromArray();
+        Iterator<Point> firstIterator = firstFunction.iterator();
 
-        TabulatedFunction firstListOfFunction = createFirstFunction();
-        Iterator<Point> functionIterator = firstListOfFunction.iterator();
+        TabulatedFunction secondFunction = createFirstFunction();
+        Iterator<Point> secondIterator = secondFunction.iterator();
 
         int a = 0;
         int b = 0;
-        while (arrayIterator.hasNext()) {
-            Point point = arrayIterator.next();
-            assertEquals(point.x, array.getX(a++));
-            assertEquals(point.y, array.getY(b++));
+        while (firstIterator.hasNext()) {
+            Point point = firstIterator.next();
+            assertEquals(point.x, firstFunction.getX(a++));
+            assertEquals(point.y, firstFunction.getY(b++));
         }
+        assertEquals(a, 5);
+        assertEquals(b, 5);
 
         int c = 0;
         int d = 0;
-        while (functionIterator.hasNext()) {
-            Point point = functionIterator.next();
-            assertEquals(point.x, firstListOfFunction.getX(c++));
-            assertEquals(point.y, firstListOfFunction.getY(d++));
+        while (secondIterator.hasNext()) {
+            Point point = secondIterator.next();
+            assertEquals(point.x, secondFunction.getX(c++));
+            assertEquals(point.y, secondFunction.getY(d++));
         }
+        assertEquals(c, 9);
+        assertEquals(d, 9);
 
         int e = 0;
         int f = 0;
-        for (Point point : array) {
-            assertEquals(point.x, array.getX(e++));
-            assertEquals(point.y, array.getY(f++));
+        for (Point point : firstFunction) {
+            assertEquals(point.x, firstFunction.getX(e++));
+            assertEquals(point.y, firstFunction.getY(f++));
         }
+        assertEquals(e, 5);
+        assertEquals(f, 5);
 
         int g = 0;
         int h = 0;
-        for (Point point : firstListOfFunction) {
-            assertEquals(point.x, firstListOfFunction.getX(g++));
-            assertEquals(point.y, firstListOfFunction.getY(h++));
+        for (Point point : secondFunction) {
+            assertEquals(point.x, secondFunction.getX(g++));
+            assertEquals(point.y, secondFunction.getY(h++));
         }
+        assertEquals(g, 9);
+        assertEquals(h, 9);
     }
 }
