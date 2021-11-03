@@ -21,6 +21,12 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         //TODO: добавить проверку xFrom < xTo и count > 2
         xValues = new double[count];
         yValues = new double[count];
+        if (count < 2) {
+            throw new IllegalArgumentException("Length is less than permissible");
+        }
+        if (xFrom < xTo) {
+            throw new ArrayIndexOutOfBoundsException("Index is out of bounds");
+        }
         double step = (xTo - xFrom) / (count - 1);
         double j = xFrom;
         for (int i = 0; i < count; i++) {
