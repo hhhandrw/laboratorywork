@@ -32,7 +32,6 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
         }
     }
 
-
     public double apply(double x) {
         if (x < leftBound()) {
             return extrapolateLeft(x);
@@ -46,4 +45,14 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
             }
         }
     }
+
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.getClass().getSimpleName()).append(" size= ").append(this.getCount()).append("\n");
+        for (Point point : this) {
+            stringBuilder.append("[").append(point.x).append("; ").append(point.y).append("]\n");
+        }
+        return stringBuilder.toString();
+    }
 }
+
