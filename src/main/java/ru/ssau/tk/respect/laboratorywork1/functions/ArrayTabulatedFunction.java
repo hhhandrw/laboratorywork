@@ -18,7 +18,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-        //TODO: добавить проверку xFrom < xTo и count > 2
         xValues = new double[count];
         yValues = new double[count];
         if (count < 2) {
