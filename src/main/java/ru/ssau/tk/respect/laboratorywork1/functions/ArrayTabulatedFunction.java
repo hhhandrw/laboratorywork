@@ -23,7 +23,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         if (count < 2) {
             throw new IllegalArgumentException("Length is less than permissible");
         }
-        if (xFrom < xTo) {
+        if (xFrom >= xTo) {
             throw new ArrayIndexOutOfBoundsException("Index is out of bounds");
         }
         double step = (xTo - xFrom) / (count - 1);
