@@ -1,7 +1,5 @@
 package ru.ssau.tk.respect.laboratorywork1.functions;
 
-import ru.ssau.tk.respect.laboratorywork1.exceptions.InterpolationException;
-
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -155,9 +153,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     public double interpolate(double x, int floorIndex) {
         Node node = getNode(floorIndex);
         Node nodeNext = node.next;
-        /*if (x < node.x || x > nodeNext.x) {
-            throw new InterpolationException();
-        }*/
         return interpolate(x, node.x, nodeNext.x, node.y, nodeNext.y);
     }
 
