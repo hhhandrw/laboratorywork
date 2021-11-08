@@ -57,6 +57,12 @@ public final class FunctionsIO {
         return factory.create(xValues, yValues);
     }
 
+    static void serialize(BufferedOutputStream stream, TabulatedFunction function) throws IOException {
+        ObjectOutputStream out = new ObjectOutputStream(stream);
+        out.writeObject(function);
+        out.flush();
+    }
+
     static TabulatedFunction deserialize(BufferedInputStream stream) throws ClassNotFoundException, IOException {
         ObjectInputStream in = new ObjectInputStream(stream);
         return (TabulatedFunction) in.readObject();
