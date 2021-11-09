@@ -8,6 +8,7 @@ import ru.ssau.tk.respect.laboratorywork1.exceptions.ArrayIsNotSortedException;
 import ru.ssau.tk.respect.laboratorywork1.exceptions.DifferentLengthOfArraysException;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedListTabulatedFunctionTest {
     private final static double DELTA = 0.0001;
@@ -314,42 +315,38 @@ public class LinkedListTabulatedFunctionTest {
         TabulatedFunction secondFunction = createFirstFunction();
         Iterator<Point> secondIterator = secondFunction.iterator();
 
-        int a = 0;
-        int b = 0;
+        int i = 0;
         while (firstIterator.hasNext()) {
             Point point = firstIterator.next();
-            assertEquals(point.x, firstFunction.getX(a++));
-            assertEquals(point.y, firstFunction.getY(b++));
+            assertEquals(point.x, firstFunction.getX(i));
+            assertEquals(point.y, firstFunction.getY(i++));
         }
-        assertEquals(a, 5);
-        assertEquals(b, 5);
+        assertEquals(i, 5);
+        assertThrows(NoSuchElementException.class, firstIterator::next);
 
-        int c = 0;
-        int d = 0;
+        i = 0;
         while (secondIterator.hasNext()) {
             Point point = secondIterator.next();
-            assertEquals(point.x, secondFunction.getX(c++));
-            assertEquals(point.y, secondFunction.getY(d++));
+            assertEquals(point.x, secondFunction.getX(i));
+            assertEquals(point.y, secondFunction.getY(i++));
         }
-        assertEquals(c, 9);
-        assertEquals(d, 9);
+        assertEquals(i, 9);
+        assertThrows(NoSuchElementException.class, secondIterator::next);
 
-        int e = 0;
-        int f = 0;
+        i = 0;
         for (Point point : firstFunction) {
-            assertEquals(point.x, firstFunction.getX(e++));
-            assertEquals(point.y, firstFunction.getY(f++));
+            assertEquals(point.x, firstFunction.getX(i));
+            assertEquals(point.y, firstFunction.getY(i++));
         }
-        assertEquals(e, 5);
-        assertEquals(f, 5);
+        assertEquals(i, 5);
+        assertThrows(NoSuchElementException.class, firstIterator::next);
 
-        int g = 0;
-        int h = 0;
+        i = 0;
         for (Point point : secondFunction) {
-            assertEquals(point.x, secondFunction.getX(g++));
-            assertEquals(point.y, secondFunction.getY(h++));
+            assertEquals(point.x, secondFunction.getX(i));
+            assertEquals(point.y, secondFunction.getY(i++));
         }
-        assertEquals(g, 9);
-        assertEquals(h, 9);
+        assertEquals(i, 9);
+        assertThrows(NoSuchElementException.class, secondIterator::next);
     }
 }

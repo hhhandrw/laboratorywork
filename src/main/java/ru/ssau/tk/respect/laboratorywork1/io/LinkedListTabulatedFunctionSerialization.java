@@ -1,7 +1,7 @@
 package ru.ssau.tk.respect.laboratorywork1.io;
 
+import ru.ssau.tk.respect.laboratorywork1.functions.HalfFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.LinkedListTabulatedFunction;
-import ru.ssau.tk.respect.laboratorywork1.functions.SqrFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.TabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.factory.LinkedListTabulatedFunctionFactory;
 import ru.ssau.tk.respect.laboratorywork1.operations.TabulatedDifferentialOperator;
@@ -11,7 +11,7 @@ import java.io.*;
 public class LinkedListTabulatedFunctionSerialization {
 
     public static void main(String[] args) {
-        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(new SqrFunction(), 4, 16, 25);
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(new HalfFunction(), 4, 16, 25);
         TabulatedDifferentialOperator differentialOperator = new TabulatedDifferentialOperator(new LinkedListTabulatedFunctionFactory());
         TabulatedFunction firstDerivative = differentialOperator.derive(function);
         TabulatedFunction secondDerivative = differentialOperator.derive(firstDerivative);

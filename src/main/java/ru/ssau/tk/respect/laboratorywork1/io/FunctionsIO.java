@@ -15,7 +15,7 @@ public final class FunctionsIO {
         throw new UnsupportedOperationException();
     }
 
-    static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
+    public static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
         DataOutputStream out = new DataOutputStream(outputStream);
         out.writeInt(function.getCount());
         for (Point point : function) {
@@ -25,7 +25,7 @@ public final class FunctionsIO {
         out.flush();
     }
 
-    static TabulatedFunction readTabulatedFunction(BufferedInputStream inputStream, TabulatedFunctionFactory factory) throws IOException {
+    public static TabulatedFunction readTabulatedFunction(BufferedInputStream inputStream, TabulatedFunctionFactory factory) throws IOException {
         DataInputStream in = new DataInputStream(inputStream);
         int length = in.readInt();
 
@@ -39,7 +39,7 @@ public final class FunctionsIO {
         return factory.create(xValues, yValues);
     }
 
-    static TabulatedFunction readTabulatedFunction(BufferedReader reader, TabulatedFunctionFactory factory) throws IOException {
+    public static TabulatedFunction readTabulatedFunction(BufferedReader reader, TabulatedFunctionFactory factory) throws IOException {
         int count = Integer.parseInt(reader.readLine());
         double[] xValues = new double[count];
         double[] yValues = new double[count];
@@ -57,13 +57,13 @@ public final class FunctionsIO {
         return factory.create(xValues, yValues);
     }
 
-    static void serialize(BufferedOutputStream stream, TabulatedFunction function) throws IOException {
+    public static void serialize(BufferedOutputStream stream, TabulatedFunction function) throws IOException {
         ObjectOutputStream out = new ObjectOutputStream(stream);
         out.writeObject(function);
         out.flush();
     }
 
-    static TabulatedFunction deserialize(BufferedInputStream stream) throws ClassNotFoundException, IOException {
+    public static TabulatedFunction deserialize(BufferedInputStream stream) throws ClassNotFoundException, IOException {
         ObjectInputStream in = new ObjectInputStream(stream);
         return (TabulatedFunction) in.readObject();
     }

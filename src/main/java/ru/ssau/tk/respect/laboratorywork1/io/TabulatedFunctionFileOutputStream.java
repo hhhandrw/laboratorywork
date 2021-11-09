@@ -4,9 +4,6 @@ import ru.ssau.tk.respect.laboratorywork1.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.LinkedListTabulatedFunction;
 
 import java.io.*;
-import java.util.Arrays;
-
-import static com.sun.corba.se.impl.util.Utility.printStackTrace;
 
 public class TabulatedFunctionFileOutputStream {
 

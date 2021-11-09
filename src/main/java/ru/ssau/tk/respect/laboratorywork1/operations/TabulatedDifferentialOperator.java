@@ -7,7 +7,7 @@ import ru.ssau.tk.respect.laboratorywork1.functions.factory.TabulatedFunctionFac
 
 public class TabulatedDifferentialOperator implements DifferentialOperator<TabulatedFunction> {
 
-    TabulatedFunctionFactory factory;
+    public TabulatedFunctionFactory factory;
 
     public TabulatedDifferentialOperator(TabulatedFunctionFactory factory) {
         this.factory = factory;
