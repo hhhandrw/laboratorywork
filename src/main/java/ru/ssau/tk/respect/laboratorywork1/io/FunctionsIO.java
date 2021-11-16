@@ -1,5 +1,6 @@
 package ru.ssau.tk.respect.laboratorywork1.io;
 
+import ru.ssau.tk.respect.laboratorywork1.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.Point;
 import ru.ssau.tk.respect.laboratorywork1.functions.TabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.factory.TabulatedFunctionFactory;
@@ -23,6 +24,14 @@ public final class FunctionsIO {
             out.writeDouble(point.y);
         }
         out.flush();
+    }
+    public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) {
+        PrintWriter printWriter = new PrintWriter(writer);
+        printWriter.println(function.getCount());
+        for (Point point : function) {
+            printWriter.printf("%f %f\n", point.x, point.y);
+        }
+        printWriter.flush();
     }
 
     public static TabulatedFunction readTabulatedFunction(BufferedInputStream inputStream, TabulatedFunctionFactory factory) throws IOException {

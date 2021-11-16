@@ -32,6 +32,7 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
         }
     }
 
+    @Override
     public double apply(double x) {
         if (x < leftBound()) {
             return extrapolateLeft(x);
