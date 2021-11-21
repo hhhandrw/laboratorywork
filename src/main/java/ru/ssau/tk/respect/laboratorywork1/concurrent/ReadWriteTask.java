@@ -4,7 +4,7 @@ import ru.ssau.tk.respect.laboratorywork1.functions.TabulatedFunction;
 
 public class ReadWriteTask implements Runnable {
 
-    private TabulatedFunction tabulatedFunction;
+    private final TabulatedFunction tabulatedFunction;
 
     public ReadWriteTask(TabulatedFunction tabulatedFunction) {
         this.tabulatedFunction = tabulatedFunction;
@@ -15,10 +15,10 @@ public class ReadWriteTask implements Runnable {
         for (int i = 0; i < tabulatedFunction.getCount(); i++) {
             double x = tabulatedFunction.getX(i);
             double y = tabulatedFunction.getY(i);
-            System.out.printf("%s, before write: i = %d, x = %f, y = %f", Thread.currentThread().getName(), i, x, y);
+            System.out.printf("%s, before write: i = %d, x = %f, y = %f\n", Thread.currentThread().getName(), i, x, y);
             tabulatedFunction.setY(i, y + 1);
             y = tabulatedFunction.getY(i);
-            System.out.printf("%s, after write: i = %d, x = %f, y = %f", Thread.currentThread().getName(), i, x, y);
+            System.out.printf("%s, after write: i = %d, x = %f, y = %f\n", Thread.currentThread().getName(), i, x, y);
         }
     }
 }
