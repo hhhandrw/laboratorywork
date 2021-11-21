@@ -3,6 +3,9 @@ package ru.ssau.tk.respect.laboratorywork1.concurrent;
 import org.testng.annotations.Test;
 import ru.ssau.tk.respect.laboratorywork1.functions.*;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import static org.testng.Assert.*;
 
 public class SynchronizedTabulatedFunctionTest {
@@ -128,5 +131,45 @@ public class SynchronizedTabulatedFunctionTest {
         assertEquals(secondSynchronizedTabulatedFunction.apply(60.0), 63.0);
         assertEquals(thirdSynchronizedTabulatedFunction.apply(20.0), 10.0);
         assertEquals(forthSynchronizedTabulatedFunction.apply(1.4), 0.7);
+    }
+
+    @Test
+    public void testIterator() {
+        Iterator<Point> firstIterator = firstSynchronizedTabulatedFunction.iterator();
+        Iterator<Point> secondIterator = forthSynchronizedTabulatedFunction.iterator();
+
+        int i = 0;
+        while (firstIterator.hasNext()) {
+            Point point = firstIterator.next();
+            assertEquals(point.x, firstSynchronizedTabulatedFunction.getX(i));
+            assertEquals(point.y, firstSynchronizedTabulatedFunction.getY(i++));
+        }
+        assertEquals(i, 5);
+        assertThrows(NoSuchElementException.class, firstIterator::next);
+
+        i = 0;
+        while (secondIterator.hasNext()) {
+            Point point = secondIterator.next();
+            assertEquals(point.x, forthSynchronizedTabulatedFunction.getX(i));
+            assertEquals(point.y, forthSynchronizedTabulatedFunction.getY(i++));
+        }
+        assertEquals(i, 19);
+        assertThrows(NoSuchElementException.class, secondIterator::next);
+
+        i = 0;
+        for (Point point : firstSynchronizedTabulatedFunction) {
+            assertEquals(point.x, firstSynchronizedTabulatedFunction.getX(i));
+            assertEquals(point.y, firstSynchronizedTabulatedFunction.getY(i++));
+        }
+        assertEquals(i, 5);
+        assertThrows(NoSuchElementException.class, firstIterator::next);
+
+        i = 0;
+        for (Point point : forthSynchronizedTabulatedFunction) {
+            assertEquals(point.x, forthSynchronizedTabulatedFunction.getX(i));
+            assertEquals(point.y, forthSynchronizedTabulatedFunction.getY(i++));
+        }
+        assertEquals(i, 19);
+        assertThrows(NoSuchElementException.class, secondIterator::next);
     }
 }
