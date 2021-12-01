@@ -11,69 +11,64 @@ import java.text.ParseException;
 import java.util.Locale;
 
 public final class FunctionsIO {
-
-    private FunctionsIO() {
+    FunctionsIO() {
         throw new UnsupportedOperationException();
     }
 
-    public static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
-        DataOutputStream out = new DataOutputStream(outputStream);
-        out.writeInt(function.getCount());
-        for (Point point : function) {
-            out.writeDouble(point.x);
-            out.writeDouble(point.y);
-        }
-        out.flush();
-    }
-    public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) {
+    static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) {
         PrintWriter printWriter = new PrintWriter(writer);
         printWriter.println(function.getCount());
-        for (Point point : function) {
-            printWriter.printf("%f %f\n", point.x, point.y);
+        for (Point i : function) {
+            printWriter.printf("%f %f\n", i.x, i.y);
         }
         printWriter.flush();
     }
 
-    public static TabulatedFunction readTabulatedFunction(BufferedInputStream inputStream, TabulatedFunctionFactory factory) throws IOException {
-        DataInputStream in = new DataInputStream(inputStream);
-        int length = in.readInt();
-
-        double[] xValues = new double[length];
-        double[] yValues = new double[length];
-
-        for (int i = 0; i < length; i++) {
-            xValues[i] = in.readDouble();
-            yValues[i] = in.readDouble();
+    static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+        dataOutputStream.writeInt(function.getCount());
+        for (Point i : function) {
+            dataOutputStream.writeDouble(i.x);
+            dataOutputStream.writeDouble(i.y);
         }
-        return factory.create(xValues, yValues);
+        dataOutputStream.flush();
     }
 
-    public static TabulatedFunction readTabulatedFunction(BufferedReader reader, TabulatedFunctionFactory factory) throws IOException {
+    static TabulatedFunction readTabulatedFunction(BufferedReader reader, TabulatedFunctionFactory factory) throws IOException {
         int count = Integer.parseInt(reader.readLine());
         double[] xValues = new double[count];
         double[] yValues = new double[count];
-        NumberFormat numberFormat = NumberFormat.getInstance(Locale.forLanguageTag("ru"));
-
-        for (int i = 0; i < count; i++) {
-            String str = reader.readLine();
-            try {
-                xValues[i] = numberFormat.parse(str.split(" ")[0]).doubleValue();
-                yValues[i] = numberFormat.parse(str.split(" ")[1]).doubleValue();
-            } catch (ParseException parseException) {
-                throw new IOException(parseException);
+        NumberFormat numberFormatter = NumberFormat.getInstance(Locale.forLanguageTag("ru"));
+        try {
+            String[] numbers;
+            for (int i = 0; i < count; i++) {
+                numbers = reader.readLine().split(" ");
+                xValues[i] = numberFormatter.parse(numbers[0]).doubleValue();
+                yValues[i] = numberFormatter.parse(numbers[1]).doubleValue();
             }
+        } catch (ParseException e) {
+            throw new IOException(e);
         }
         return factory.create(xValues, yValues);
     }
 
-    public static void serialize(BufferedOutputStream stream, TabulatedFunction function) throws IOException {
-        ObjectOutputStream out = new ObjectOutputStream(stream);
-        out.writeObject(function);
-        out.flush();
+    static TabulatedFunction readTabulatedFunction(BufferedInputStream inputStream, TabulatedFunctionFactory factory) throws IOException {
+        DataInputStream dataInputStream = new DataInputStream(inputStream);
+        int count = dataInputStream.readInt();
+        double[] xValues= new double[count];
+        double[] yValues= new double[count];
+        for (int i = 0; i < count; i++) {
+            xValues[i] = dataInputStream.readDouble();
+            yValues[i] = dataInputStream.readDouble();
+        }
+        return factory.create(xValues, yValues);
     }
-
-    public static TabulatedFunction deserialize(BufferedInputStream stream) throws ClassNotFoundException, IOException {
-        ObjectInputStream in = new ObjectInputStream(stream);
-        return (TabulatedFunction) in.readObject();
+    static void serialize(BufferedOutputStream stream, TabulatedFunction function) throws IOException{
+        ObjectOutputStream outputStream = new ObjectOutputStream(stream);
+        outputStream.writeObject(function);
+        outputStream.flush();
+    }
+    public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
+        return (TabulatedFunction) new ObjectInputStream(stream).readObject();
     }
 }

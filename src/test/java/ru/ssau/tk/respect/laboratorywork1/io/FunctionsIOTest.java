@@ -26,15 +26,14 @@ public class FunctionsIOTest {
 
     @Test
     public void testByteStreams() throws IOException {
-        TabulatedFunction tabulatedFunction = new ArrayTabulatedFunction(new double[]{2, 3, 5, 7, 9}, new double[]{5, 8, 17, 21, 15, 34});
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream("temp/test byte streams.bin"));
-        FunctionsIO.writeTabulatedFunction(bufferedOutputStream, tabulatedFunction);
+        FunctionsIO.writeTabulatedFunction(bufferedOutputStream, arrayTabulated);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream("temp/test byte streams.bin"));
         TabulatedFunction listTabulated = FunctionsIO.readTabulatedFunction(bufferedInputStream, new LinkedListTabulatedFunctionFactory());
-        Assert.assertEquals(listTabulated.getCount(), tabulatedFunction.getCount());
+        Assert.assertEquals(listTabulated.getCount(), arrayTabulated.getCount());
         for (int index = 0; index < listTabulated.getCount(); index++) {
-            Assert.assertEquals(listTabulated.getX(index), tabulatedFunction.getX(index));
-            Assert.assertEquals(listTabulated.getY(index), tabulatedFunction.getY(index));
+            Assert.assertEquals(listTabulated.getX(index), arrayTabulated.getX(index));
+            Assert.assertEquals(listTabulated.getY(index), arrayTabulated.getY(index));
         }
     }
 

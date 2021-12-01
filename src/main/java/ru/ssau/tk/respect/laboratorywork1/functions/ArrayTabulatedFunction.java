@@ -1,31 +1,38 @@
 package ru.ssau.tk.respect.laboratorywork1.functions;
 
+import ru.ssau.tk.respect.laboratorywork1.exceptions.InterpolationException;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.io.Serializable;
 
-public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
-    private final double[] xValues;
-    private final double[] yValues;
-    private final int count;
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Serializable {
+    private static final long serialVersionUID = 476017482196043048L;
+    private double[] xValues;
+    private double[] yValues;
+    private int count;
 
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
         checkLengthIsTheSame(xValues, yValues);
+        if (xValues.length < 2) {
+            throw new IllegalArgumentException("xValues.length < 2");
+        }
         checkSorted(xValues);
+        this.xValues = Arrays.copyOf(xValues, xValues.length);
+        this.yValues = Arrays.copyOf(yValues, xValues.length);
         count = xValues.length;
-        this.xValues = Arrays.copyOf(xValues, count);
-        this.yValues = Arrays.copyOf(yValues, count);
     }
 
     public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
+        if (xFrom >= xTo) {
+            throw new IllegalArgumentException("From >= To");
+        }
+        if (count < 2) {
+            throw new IllegalArgumentException("count < 2");
+        }
         xValues = new double[count];
         yValues = new double[count];
-        if (count < 2) {
-            throw new IllegalArgumentException("Length is less than permissible");
-        }
-        if (xFrom >= xTo) {
-            throw new ArrayIndexOutOfBoundsException("Index is out of bounds");
-        }
         double step = (xTo - xFrom) / (count - 1);
         double j = xFrom;
         for (int i = 0; i < count; i++) {
@@ -37,33 +44,60 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     @Override
+    public int floorIndexOfX(double x) {
+        if (x < leftBound()) {
+            throw new IllegalArgumentException("x < leftBound()");
+        }
+        if (x > rightBound()) {
+            return count - 1;
+        } else if (Arrays.binarySearch(xValues, x) < 0) {
+            return Math.abs(Arrays.binarySearch(xValues, x) + 2);
+        }
+        return Arrays.binarySearch(xValues, x);
+    }
+
+    @Override
+    public double extrapolateLeft(double x) {
+        return super.interpolate(x, xValues[0], xValues[1], yValues[0], yValues[1]);
+    }
+
+    @Override
+    public double extrapolateRight(double x) {
+        return super.interpolate(x, xValues[count - 2], xValues[count - 1], yValues[count - 2], yValues[count - 1]);
+    }
+
+    @Override
+    public double interpolate(double x, int floorIndex) {
+        return super.interpolate(x, xValues[floorIndex], xValues[floorIndex + 1], yValues[floorIndex], yValues[floorIndex + 1]);
+    }
+
+    @Override
     public int getCount() {
         return count;
     }
 
     @Override
     public double getX(int index) {
+        if (index < 0 || index > count - 1) {
+            throw new IllegalArgumentException("IndexOutOfBounds");
+        }
         return xValues[index];
     }
 
     @Override
     public double getY(int index) {
+        if (index < 0 || index > count - 1) {
+            throw new IllegalArgumentException("IndexOutOfBounds");
+        }
         return yValues[index];
     }
 
     @Override
     public void setY(int index, double value) {
+        if (index < 0 || index > count - 1) {
+            throw new IllegalArgumentException("IndexOutOfBounds");
+        }
         yValues[index] = value;
-    }
-
-    @Override
-    public double leftBound() {
-        return xValues[0];
-    }
-
-    @Override
-    public double rightBound() {
-        return xValues[count - 1];
     }
 
     @Override
@@ -83,45 +117,61 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     @Override
-    public int floorIndexOfX(double x) {
-        if (x > rightBound()) {
-            return count - 1;
-        } else if (x < leftBound()) {
-            return 0;
-        } else if (Arrays.binarySearch(xValues, x) < 0) {
-            return Math.abs(Arrays.binarySearch(xValues, x) + 2);
-        }
-        return Arrays.binarySearch(xValues, x);
+    public double leftBound() {
+        return xValues[0];
     }
 
     @Override
-    public double extrapolateLeft(double x) {
-        if (count == 1) {
-            return yValues[0];
+    public double rightBound() {
+        return xValues[count - 1];
+    }
+
+    public void insert(double x, double y) {
+        for (int i = 0; i < count; i++) {
+            if (xValues[i] == x) {
+                yValues[i] = y;
+                break;
+            } else if (xValues[i] > x) {
+                double[] upXValues = new double[count + 1];
+                double[] upYValues = new double[count + 1];
+                insertIntoArr(xValues, upXValues, i, x);
+                insertIntoArr(yValues, upYValues, i, y);
+                xValues = upXValues;
+                yValues = upYValues;
+                count++;
+                break;
+            }
         }
-        return interpolate(x, 0);
+    }
+
+    private void insertIntoArr(double[] from, double[] in, int index, double value) {
+        System.arraycopy(from, 0, in, 0, index);
+        in[index] = value;
+        System.arraycopy(from, index, in, index + 1, from.length - index);
+    }
+
+    public void remove(int index) {
+        if (index < 0 || index > count - 1) {
+            throw new IllegalArgumentException("IndexOutOfBounds");
+        }
+        double[] upXValues = new double[count - 1];
+        double[] upYValues = new double[count - 1];
+        removeIntoArr(xValues, upXValues, index);
+        removeIntoArr(yValues, upYValues, index);
+        xValues = upXValues;
+        yValues = upYValues;
+        count++;
+    }
+
+    private void removeIntoArr(double[] from, double[] in, int index) {
+        System.arraycopy(from, 0, in, 0, index - 1);
+        System.arraycopy(from, index, in, index - 1, from.length - index);
     }
 
     @Override
-    public double extrapolateRight(double x) {
-        if (count == 1) {
-            return yValues[0];
-        }
-        return interpolate(x, count - 2);
-    }
-
-    @Override
-    public double interpolate(double x, int floorIndex) {
-        if (count == 1) {
-            return yValues[0];
-        }
-        return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1],
-                yValues[floorIndex], yValues[floorIndex + 1]);
-    }
-
     public Iterator<Point> iterator() {
         return new Iterator<Point>() {
-            int i = 0;
+            private int i = 0;
 
             @Override
             public boolean hasNext() {
@@ -130,12 +180,12 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
 
             @Override
             public Point next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
+                if (hasNext()) {
+                    Point point = new Point(xValues[i], yValues[i]);
+                    i++;
+                    return point;
                 }
-                Point point = new Point(xValues[i], yValues[i]);
-                i++;
-                return point;
+                throw new NoSuchElementException();
             }
         };
     }
