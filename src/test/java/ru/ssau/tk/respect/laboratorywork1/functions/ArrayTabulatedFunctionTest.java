@@ -17,6 +17,7 @@ public class ArrayTabulatedFunctionTest {
     private static final double[] yValues = new double[]{-2.7, 1.4, 3, 5.1};
 
     private final MathFunction function = new HalfFunction();
+    private static final HalfFunction halfFunction = new HalfFunction();
 
     private static final ArrayTabulatedFunction arrayTabulatedObject = new ArrayTabulatedFunction(xValues, yValues);
 
@@ -37,12 +38,11 @@ public class ArrayTabulatedFunctionTest {
     }
 
     @Test
-    public void testConstructorExceptions() {
-        double[] xValues = new double[]{2.1, 3.4, 5.2, 6};
-        double[] yValues = new double[]{-2.4, 1.2, 3, 5.1};
-        TabulatedFunction arrayTabulateObject = new ArrayTabulatedFunction(xValues, yValues);
-        Assert.assertEquals(arrayTabulateObject.getCount(), 4);
-        Assert.assertThrows(IllegalArgumentException.class, () -> new ArrayTabulatedFunction(new double[]{1}, new double[]{3}));
+    public static void testConstructors() {
+        Assert.assertThrows(DifferentLengthOfArraysException.class, () -> new ArrayTabulatedFunction(new double[]{3.4, 5.2, 6, 7.1, 2.3}, yValues));
+        Assert.assertThrows(ArrayIsNotSortedException.class, () -> new ArrayTabulatedFunction(new double[]{3.4, 5.2, 6, 5.2}, yValues));
+        Assert.assertThrows(IllegalArgumentException.class,()->new ArrayTabulatedFunction(halfFunction, 1.2, 67.2, 1));
+
     }
 
     @Test
