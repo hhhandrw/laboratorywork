@@ -41,8 +41,9 @@ public class ArrayTabulatedFunctionTest {
     public static void testConstructors() {
         Assert.assertThrows(DifferentLengthOfArraysException.class, () -> new ArrayTabulatedFunction(new double[]{3.4, 5.2, 6, 7.1, 2.3}, yValues));
         Assert.assertThrows(ArrayIsNotSortedException.class, () -> new ArrayTabulatedFunction(new double[]{3.4, 5.2, 6, 5.2}, yValues));
-        Assert.assertThrows(IllegalArgumentException.class,()->new ArrayTabulatedFunction(halfFunction, 1.2, 67.2, 1));
-
+        Assert.assertThrows(IllegalArgumentException.class, () -> new ArrayTabulatedFunction(new double[]{1.1}, new double[]{1.2}));
+        Assert.assertThrows(IllegalArgumentException.class, () -> new ArrayTabulatedFunction(halfFunction, 1.2, 67.2, 1));
+        Assert.assertThrows(IllegalArgumentException.class, () -> new ArrayTabulatedFunction(halfFunction, 86.1, 10.7, 10));
     }
 
     @Test
