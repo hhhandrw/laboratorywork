@@ -172,4 +172,11 @@ public class SynchronizedTabulatedFunctionTest {
         assertEquals(i, 19);
         assertThrows(NoSuchElementException.class, secondIterator::next);
     }
+
+    @Test
+    public void testDoSynchronously() {
+        SynchronizedTabulatedFunction synchronizedTabulatedFunction = new SynchronizedTabulatedFunction(new LinkedListTabulatedFunction(xValues, yValues), object);
+        assertEquals((int) synchronizedTabulatedFunction.doSynchronously(SynchronizedTabulatedFunction::getCount), 5);
+        assertEquals(synchronizedTabulatedFunction.doSynchronously(SynchronizedTabulatedFunction::rightBound), 9.0);
+    }
 }
