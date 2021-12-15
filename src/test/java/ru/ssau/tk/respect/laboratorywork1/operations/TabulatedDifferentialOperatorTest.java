@@ -86,4 +86,38 @@ public class TabulatedDifferentialOperatorTest {
         assertEquals(thirdArrayDerivative.getY(4), 3.0);
         assertTrue(thirdArrayDerivative instanceof ArrayTabulatedFunction);
     }
+
+    @Test
+    public void testDeriveSynchronously() {
+        TabulatedFunction linkedListTabulatedFunction = new LinkedListTabulatedFunction(new double[]{2., 3., 4., 5., 6.}, new double[]{4., 9., 16., 25., 37.});
+        TabulatedDifferentialOperator differentialOperatorList = new TabulatedDifferentialOperator(new LinkedListTabulatedFunctionFactory());
+        TabulatedFunction differentialFunctionList = differentialOperatorList.deriveSynchronously(linkedListTabulatedFunction);
+
+        assertTrue(differentialFunctionList instanceof LinkedListTabulatedFunction);
+
+        for (int i = 0; i < differentialFunctionList.getCount(); i++) {
+            assertEquals(differentialFunctionList.getX(i), (2. + (double) i));
+        }
+
+        assertEquals(differentialFunctionList.getY(0), 5.);
+        assertEquals(differentialFunctionList.getY(1), 7.);
+        assertEquals(differentialFunctionList.getY(2), 9.);
+        assertEquals(differentialFunctionList.getY(3), 12.);
+        assertEquals(differentialFunctionList.getY(4), 12.);
+
+        TabulatedFunction arrayTabulatedFunction = new ArrayTabulatedFunction(new double[]{4., 5., 6., 7., 8.}, new double[]{16., 25., 36., 49., 64.});
+        TabulatedDifferentialOperator differentialOperatorArray = new TabulatedDifferentialOperator(new ArrayTabulatedFunctionFactory());
+        TabulatedFunction differentialFunctionArray = differentialOperatorArray.deriveSynchronously(arrayTabulatedFunction);
+        assertTrue(differentialFunctionArray instanceof ArrayTabulatedFunction);
+
+        for (int i = 0; i < differentialFunctionArray.getCount(); i++) {
+            assertEquals(differentialFunctionArray.getX(i), (4. + (double) i));
+        }
+
+        assertEquals(differentialFunctionArray.getY(0), 9.);
+        assertEquals(differentialFunctionArray.getY(1), 11.);
+        assertEquals(differentialFunctionArray.getY(2), 13.);
+        assertEquals(differentialFunctionArray.getY(3), 15.);
+        assertEquals(differentialFunctionArray.getY(4), 15.);
+    }
 }
