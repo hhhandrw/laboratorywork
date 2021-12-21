@@ -2,6 +2,7 @@ package ru.ssau.tk.respect.laboratorywork1.ui;
 
 import ru.ssau.tk.respect.laboratorywork1.exceptions.ArrayIsNotSortedException;
 import ru.ssau.tk.respect.laboratorywork1.functions.ArrayTabulatedFunction;
+import ru.ssau.tk.respect.laboratorywork1.functions.TabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.factory.ArrayTabulatedFunctionFactory;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Window extends JFrame {
+public class Window extends JDialog {
 
     List<String> xValues = new ArrayList<>();
     List<String> yValues = new ArrayList<>();
@@ -27,10 +28,11 @@ public class Window extends JFrame {
     JButton addButton = new JButton("Добавить");
     JButton createButton = new JButton("Создать");
     JButton refreshButton = new JButton("Очистить");
+    TabulatedFunction function;
 
     public Window() {
-        super("Window");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setModal(true);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLayout(new FlowLayout());
         setSize(500, 300);
 
@@ -49,6 +51,10 @@ public class Window extends JFrame {
         compose();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public TabulatedFunction getFunction() {
+        return function;
     }
 
     private void compose() {
@@ -118,8 +124,7 @@ public class Window extends JFrame {
                     y[i] = Double.parseDouble(yValues.get(i));
                 }
                 ArrayTabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
-                ArrayTabulatedFunction function = (ArrayTabulatedFunction) factory.create(x, y);
-                System.out.println(function);
+                function =  factory.create(x, y);
                 dispose();
             } catch (NumberFormatException exp) {
                 ExceptionHandler.showMessage("Введите число в виде десятичной дроби через точку");
