@@ -91,7 +91,7 @@ public class Window extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     int size = Integer.parseInt(textField.getText());
-                    if (size < 0) {
+                    if (size <= 0) {
                         ExceptionHandler.showMessage("Введите положительное число.");
                     }
                     for (int i = 0; i < size; i++) {
@@ -153,6 +153,7 @@ public class Window extends JFrame {
                     }
                 }
             }
+
             private JPopupMenu getPopupMenu() {
                 JPopupMenu popupMenu = new JPopupMenu();
                 JMenuItem deleteItem = new JMenuItem("Удалить");

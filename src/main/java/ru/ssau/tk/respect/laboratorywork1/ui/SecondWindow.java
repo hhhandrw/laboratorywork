@@ -61,31 +61,24 @@ public class SecondWindow extends JFrame {
         double to = Double.parseDouble(thirdTextField.getText());
         int count = Integer.parseInt(textField.getText());
 
-        if (to < from) {
-            ExceptionHandler.showMessage("Введите правильный интервал");
-        }
-
         TabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
         TabulatedFunction tabulatedFunction = factory.createFromFunction(selectedFunction, from, to, count);
         System.out.println(tabulatedFunction);
     }
 
     private void addButtonListeners() {
-        createButton.addActionListener(new AbstractAction() {
-            private static final long serialVersionUID = -8347430061548209213L;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int size = Integer.parseInt(textField.getText());
-                    if (size < 0) {
-                        ExceptionHandler.showMessage("Введите положительное число.");
-                    }
-                    createFunction();
-                    dispose();
-                } catch (NumberFormatException exp) {
-                    ExceptionHandler.showMessage("Введите целое число.");
+        createButton.addActionListener(e -> {
+            try {
+                int size = Integer.parseInt(textField.getText());
+                if (size <= 0) {
+                    ExceptionHandler.showMessage("Введите положительное число");
                 }
+                createFunction();
+                dispose();
+            } catch (NumberFormatException exp) {
+                ExceptionHandler.showMessage("Введите целое число");
+            } catch (IllegalArgumentException exp) {
+                ExceptionHandler.showMessage("Введите правильный интервал");
             }
         });
     }
