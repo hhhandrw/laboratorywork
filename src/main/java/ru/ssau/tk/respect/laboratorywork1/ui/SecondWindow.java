@@ -1,14 +1,17 @@
 package ru.ssau.tk.respect.laboratorywork1.ui;
 
+import ru.ssau.tk.respect.laboratorywork1.functions.*;
+import ru.ssau.tk.respect.laboratorywork1.functions.factory.ArrayTabulatedFunctionFactory;
+import ru.ssau.tk.respect.laboratorywork1.functions.factory.TabulatedFunctionFactory;
+
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SecondWindow extends JFrame {
-    List<String> xValues = new ArrayList<>();
-    List<String> yValues = new ArrayList<>();
+
 
     JLabel label = new JLabel("Введите количество точек разбиения:");
     JTextField textField = new JTextField("");
@@ -19,7 +22,7 @@ public class SecondWindow extends JFrame {
     JComboBox<String> comboBox = new JComboBox<>(new String[]{
             "Единичная функция", "Квадратичная функция", "Константная функция", "Нулевая функция", "Тангенсальная функция", "Тождественная функция", "Функция деления на 2"
     });
-    JButton firstButton = new JButton("Создать");
+    JButton createButton = new JButton("Создать");
 
     public SecondWindow() {
         super("SecondWindow");
@@ -34,11 +37,57 @@ public class SecondWindow extends JFrame {
         getContentPane().add(thirdLabel);
         getContentPane().add(thirdTextField);
         getContentPane().add(comboBox);
-        getContentPane().add(firstButton);
+        getContentPane().add(createButton);
 
+        addButtonListeners();
         compose();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private void createFunction() {
+        Map<String, MathFunction> functionsMap = new HashMap<>();
+        functionsMap.put("Единичная функция", new UnitFunction());
+        functionsMap.put("Квадратичная функция", new SqrFunction());
+        functionsMap.put("Константная функция", new ConstantFunction(3));
+        functionsMap.put("Нулевая функция", new ZeroFunction());
+        functionsMap.put("Тангенсальная функция", new TanFunction());
+        functionsMap.put("Тождественная функция", new IdentityFunction());
+        functionsMap.put("Функция деления на 2", new HalfFunction());
+
+        String functionName = (String) comboBox.getSelectedItem();
+        MathFunction selectedFunction = functionsMap.get(functionName);
+        double from = Double.parseDouble(secondTextField.getText());
+        double to = Double.parseDouble(thirdTextField.getText());
+        int count = Integer.parseInt(textField.getText());
+
+        if (to < from) {
+            ExceptionHandler.showMessage("Введите правильный интервал");
+        }
+
+        TabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
+        TabulatedFunction tabulatedFunction = factory.createFromFunction(selectedFunction, from, to, count);
+        System.out.println(tabulatedFunction);
+    }
+
+    private void addButtonListeners() {
+        createButton.addActionListener(new AbstractAction() {
+            private static final long serialVersionUID = -8347430061548209213L;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int size = Integer.parseInt(textField.getText());
+                    if (size < 0) {
+                        ExceptionHandler.showMessage("Введите положительное число.");
+                    }
+                    createFunction();
+                    dispose();
+                } catch (NumberFormatException exp) {
+                    ExceptionHandler.showMessage("Введите целое число.");
+                }
+            }
+        });
     }
 
     private void compose() {
@@ -57,7 +106,7 @@ public class SecondWindow extends JFrame {
                         .addComponent(thirdLabel)
                         .addComponent(thirdTextField))
                 .addComponent(comboBox)
-                .addComponent(firstButton)
+                .addComponent(createButton)
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
@@ -70,7 +119,7 @@ public class SecondWindow extends JFrame {
                         .addComponent(thirdLabel)
                         .addComponent(thirdTextField))
                 .addComponent(comboBox)
-                .addComponent(firstButton)
+                .addComponent(createButton)
         );
     }
 
