@@ -1,7 +1,6 @@
 package ru.ssau.tk.respect.laboratorywork1.ui;
 
 import ru.ssau.tk.respect.laboratorywork1.exceptions.ArrayIsNotSortedException;
-import ru.ssau.tk.respect.laboratorywork1.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.TabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.factory.ArrayTabulatedFunctionFactory;
 

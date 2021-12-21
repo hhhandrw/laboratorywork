@@ -6,12 +6,10 @@ import ru.ssau.tk.respect.laboratorywork1.functions.factory.TabulatedFunctionFac
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SecondWindow extends JFrame {
-
+public class SecondWindow extends JDialog {
 
     JLabel label = new JLabel("Введите количество точек разбиения:");
     JTextField textField = new JTextField("");
@@ -25,10 +23,11 @@ public class SecondWindow extends JFrame {
     JButton createButton = new JButton("Создать");
 
     public SecondWindow() {
-        super("SecondWindow");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setModal(true);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLayout(new FlowLayout());
         setSize(400, 200);
+        createButton.setFocusPainted(false);
 
         getContentPane().add(label);
         getContentPane().add(textField);
