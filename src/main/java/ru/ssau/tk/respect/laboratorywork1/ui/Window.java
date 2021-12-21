@@ -14,7 +14,7 @@ public class Window extends JFrame {
 
     AbstractTableModel tableModel = new Table(xValues, yValues);
     JTable table = new JTable(tableModel);
-    JLabel label = new JLabel("Введите количество точек:");
+    JLabel label = new JLabel("Количество точек:");
 
     JTextField textField = new JTextField("");
     JButton addButton = new JButton("Добавить");
@@ -24,7 +24,7 @@ public class Window extends JFrame {
         super("Window");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
-        setSize(800, 400);
+        setSize(500, 300);
 
         getContentPane().add(label);
         getContentPane().add(textField);
