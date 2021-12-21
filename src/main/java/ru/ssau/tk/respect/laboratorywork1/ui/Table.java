@@ -4,7 +4,6 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class Table extends AbstractTableModel {
-
     public static final int X_COLUMN_NUMBER = 0;
     public static final int Y_COLUMN_NUMBER = 1;
     private static final long serialVersionUID = -4220594177680992257L;
