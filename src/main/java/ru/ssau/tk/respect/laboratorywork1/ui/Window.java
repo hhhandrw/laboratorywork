@@ -1,6 +1,8 @@
 package ru.ssau.tk.respect.laboratorywork1.ui;
 
 import ru.ssau.tk.respect.laboratorywork1.exceptions.ArrayIsNotSortedException;
+import ru.ssau.tk.respect.laboratorywork1.functions.ArrayTabulatedFunction;
+import ru.ssau.tk.respect.laboratorywork1.functions.factory.ArrayTabulatedFunctionFactory;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -110,6 +112,14 @@ public class Window extends JFrame {
                 int size = xValues.size();
                 double[] x = new double[size];
                 double[] y = new double[size];
+                for (int i = 0; i != size; i++) {
+                    x[i] = Double.parseDouble(xValues.get(i));
+                    y[i] = Double.parseDouble(yValues.get(i));
+                }
+                ArrayTabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
+                ArrayTabulatedFunction function = (ArrayTabulatedFunction) factory.create(x, y);
+                System.out.println(function);
+                dispose();
             } catch (NumberFormatException exp) {
                 ExceptionHandler.showMessage("Введите число в виде десятичной дроби через точку.");
             } catch (ArrayIsNotSortedException exp) {
