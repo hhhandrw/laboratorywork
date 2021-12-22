@@ -20,7 +20,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
         if (xValues.length < 2) {
-            throw new IllegalArgumentException("Length is less than permissible");
+            throw new IllegalArgumentException("Количество точек не может быть менее 2");
         }
         checkLengthIsTheSame(xValues, yValues);
         checkSorted(xValues);
@@ -31,10 +31,10 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
         if (count < 2) {
-            throw new IllegalArgumentException("Length is less than permissible");
+            throw new IllegalArgumentException("Количество точек не может быть менее 2");
         }
         if (xFrom >= xTo) {
-            throw new IllegalArgumentException("Incorrect bounds");
+            throw new IllegalArgumentException("Некорректный интервал");
         }
         double step = (xTo - xFrom) / (count - 1);
         for (int i = 0; i < count; i++) {

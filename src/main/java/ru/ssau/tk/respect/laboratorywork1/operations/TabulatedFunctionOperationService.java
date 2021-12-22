@@ -42,7 +42,7 @@ public class TabulatedFunctionOperationService {
 
     private TabulatedFunction doOperation(TabulatedFunction a, TabulatedFunction b, BiOperation operation) {
         if (a.getCount() != b.getCount()) {
-            throw new InconsistentFunctionsException("Functions have different number of points");
+            throw new InconsistentFunctionsException("Функции должны иметь одинаковое количество точек");
         }
 
         Point[] firstPoints = asPoints(a);
@@ -53,7 +53,7 @@ public class TabulatedFunctionOperationService {
 
         for (int i = 0; i < a.getCount(); i++) {
             if (firstPoints[i].x != secondPoints[i].x) {
-                throw new InconsistentFunctionsException("Functions have different meanings of X");
+                throw new InconsistentFunctionsException("Значения x должны совпадать");
             }
             xValues[i] = firstPoints[i].x;
             yValues[i] = operation.apply(firstPoints[i].y, secondPoints[i].y);

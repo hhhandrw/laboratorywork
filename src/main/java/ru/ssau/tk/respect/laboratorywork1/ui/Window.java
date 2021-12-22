@@ -135,7 +135,7 @@ public class Window extends JDialog {
             } catch (ArrayIsNotSortedException exp) {
                 ExceptionHandler.showMessage("Некорректные данные: значения X должны располагаться по возрастанию");
             } catch (IllegalArgumentException exp) {
-                ExceptionHandler.showMessage("Невозможно создать функцию менее чем из двух точек");
+                ExceptionHandler.showMessage(exp.getMessage());
             }
         });
 

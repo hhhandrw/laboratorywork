@@ -1,7 +1,5 @@
 package ru.ssau.tk.respect.laboratorywork1.functions;
 
-import ru.ssau.tk.respect.laboratorywork1.exceptions.InterpolationException;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -16,7 +14,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
         checkLengthIsTheSame(xValues, yValues);
         if (xValues.length < 2 | yValues.length < 2) {
-            throw new IllegalArgumentException("xValues.length < 2 or yValues.length < 2");
+            throw new IllegalArgumentException("Количество точек не может быть менее 2");
         }
         checkSorted(xValues);
         this.xValues = Arrays.copyOf(xValues, xValues.length);
@@ -26,10 +24,10 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
         if (xFrom >= xTo) {
-            throw new IllegalArgumentException("From >= To");
+            throw new IllegalArgumentException("Некорректный интервал");
         }
         if (count < 2) {
-            throw new IllegalArgumentException("count < 2");
+            throw new IllegalArgumentException("Количество точек не может быть менее 2");
         }
         xValues = new double[count];
         yValues = new double[count];

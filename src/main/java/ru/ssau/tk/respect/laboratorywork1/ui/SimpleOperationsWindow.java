@@ -1,8 +1,10 @@
 package ru.ssau.tk.respect.laboratorywork1.ui;
 
+import ru.ssau.tk.respect.laboratorywork1.exceptions.InconsistentFunctionsException;
 import ru.ssau.tk.respect.laboratorywork1.functions.TabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.respect.laboratorywork1.functions.factory.TabulatedFunctionFactory;
+import ru.ssau.tk.respect.laboratorywork1.operations.TabulatedFunctionOperationService;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -29,10 +31,9 @@ public class SimpleOperationsWindow extends JDialog {
     AbstractTableModel secondTableModel = new PartiallyEditable(secondXValues, secondYValues);
     JTable secondTable = new JTable(secondTableModel);
 
-    AbstractTableModel resultTableModel = new PartiallyEditable(resultXValues, resultYValues);
+    AbstractTableModel resultTableModel = new NotEditable(resultXValues, resultYValues);
     JTable resultTable = new JTable(resultTableModel);
 
-    JLabel label = new JLabel("=");
     JComboBox<String> comboBox = new JComboBox<>(new String[]{"+", "-", "*", "÷",});
 
     JButton saveButton = new JButton("Сохранить");
@@ -47,6 +48,9 @@ public class SimpleOperationsWindow extends JDialog {
     JButton resultButton = new JButton("=");
 
     private final TabulatedFunctionFactory factory;
+    private TabulatedFunction firstFunction;
+    private TabulatedFunction secondFunction;
+
 
     public SimpleOperationsWindow(TabulatedFunctionFactory factory) {
         this.factory = factory;
@@ -63,6 +67,7 @@ public class SimpleOperationsWindow extends JDialog {
         uploadButtonTwo.setFocusPainted(false);
         createButtonTwo.setFocusPainted(false);
         resultSaveButton.setFocusPainted(false);
+        resultButton.setFocusPainted(false);
 
         comboBox.setPreferredSize(new Dimension(2, 2));
         comboBox.setFont(new Font("Consolas", Font.PLAIN, 18));
@@ -155,12 +160,23 @@ public class SimpleOperationsWindow extends JDialog {
 
         fromTable.addActionListener(ee -> {
             Window window = new Window(factory);
+            if (button == createButton) {
+                firstFunction = window.getFunction();
+            } else if (button == createButtonTwo) {
+                secondFunction = window.getFunction();
+            }
+
             setValues(xValues, yValues, window.getFunction());
             tableModel.fireTableDataChanged();
         });
 
         fromFunction.addActionListener(ee -> {
             SecondWindow window = new SecondWindow(factory);
+            if (button == createButton) {
+                firstFunction = window.getFunction();
+            } else if (button == createButtonTwo) {
+                secondFunction = window.getFunction();
+            }
             setValues(xValues, yValues, window.getFunction());
             tableModel.fireTableDataChanged();
         });
@@ -169,6 +185,22 @@ public class SimpleOperationsWindow extends JDialog {
         popupMenu.addSeparator();
         popupMenu.add(fromFunction);
         popupMenu.show(button, button.getWidth() + 1, button.getHeight() / 30);
+    }
+
+    private TabulatedFunction doOperation(TabulatedFunction a, TabulatedFunction b) {
+        TabulatedFunctionOperationService operation = new TabulatedFunctionOperationService(factory);
+
+        switch ((String) comboBox.getSelectedItem()) {
+            case "+":
+                return operation.summarize(a, b);
+            case "-":
+                return operation.subtract(a, b);
+            case "*":
+                return operation.multiply(a, b);
+            case "/":
+                return operation.divide(a, b);
+        }
+        return a;
     }
 
     private void addButtonListeners() {
@@ -223,6 +255,18 @@ public class SimpleOperationsWindow extends JDialog {
 
             @Override
             public void mouseExited(MouseEvent e) {
+            }
+        });
+
+        resultButton.addActionListener(e -> {
+            try {
+                TabulatedFunction resultFunction = doOperation(firstFunction, secondFunction);
+                setValues(resultXValues, resultYValues, resultFunction);
+                resultTableModel.fireTableDataChanged();
+            } catch (NullPointerException exp) {
+                ExceptionHandler.showMessage("Введите обе функции");
+            } catch (InconsistentFunctionsException exp) {
+                ExceptionHandler.showMessage(exp.getMessage());
             }
         });
     }
