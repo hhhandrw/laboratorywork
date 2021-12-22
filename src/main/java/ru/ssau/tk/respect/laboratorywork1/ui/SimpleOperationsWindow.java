@@ -116,7 +116,7 @@ public class SimpleOperationsWindow extends JDialog {
                         .addComponent(createButton)
                         .addComponent(uploadButton)
                         .addComponent(saveButton)
-                        .addGap(33)//.addGap(60)
+                        .addGap(33)
                         .addComponent(createButtonTwo)
                         .addComponent(uploadButtonTwo)
                         .addComponent(saveButtonTwo)
@@ -266,7 +266,7 @@ public class SimpleOperationsWindow extends JDialog {
                     case "*":
                         resultFunction = operation.multiply(firstFunction, secondFunction);
                         break;
-                    case "/":
+                    case "÷":
                         resultFunction = operation.divide(firstFunction, secondFunction);
                 }
                 setValues(resultXValues, resultYValues, resultFunction);
@@ -288,7 +288,7 @@ public class SimpleOperationsWindow extends JDialog {
         uploadButtonTwo.addActionListener(e -> readFunction(SECOND_FUNCTION));
 
         saveButton.addActionListener(e -> writeFunction(firstFunction));
-        uploadButtonTwo.addActionListener(e -> writeFunction(secondFunction));
+        saveButtonTwo.addActionListener(e -> writeFunction(secondFunction));
         resultSaveButton.addActionListener(e -> writeFunction(resultFunction));
     }
 
@@ -313,9 +313,9 @@ public class SimpleOperationsWindow extends JDialog {
                         secondTableModel.fireTableDataChanged();
                 }
             } catch (IOException e) {
-                ExceptionHandler.showMessage(e.getMessage());
+                ExceptionHandler.showMessage("Некорректные данные!");
             } catch (NumberFormatException exp) {
-                ExceptionHandler.showMessage("Некорректные данные");
+                ExceptionHandler.showMessage(exp.getMessage());
             }
         }
     }

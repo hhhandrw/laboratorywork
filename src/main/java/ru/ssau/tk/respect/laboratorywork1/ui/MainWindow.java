@@ -5,8 +5,8 @@ import java.awt.*;
 
 public class MainWindow extends JFrame {
 
-    private final JButton arrayButton = new JButton("Создание функции из массивов");
-    private final JButton buttonTF = new JButton("Создание табулированной функции");
+    private final JButton arrayButton = new JButton("Создание функции с помощью массивов");
+    private final JButton buttonTF = new JButton("С помощью встроенных простых функций");
     private final JButton operationButton = new JButton("Операции над функциями");
     private final JButton settingsButton = new JButton("Настройки");
     private final JButton exitButton = new JButton("Выход");

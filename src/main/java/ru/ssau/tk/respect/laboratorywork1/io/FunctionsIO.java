@@ -1,6 +1,5 @@
 package ru.ssau.tk.respect.laboratorywork1.io;
 
-import ru.ssau.tk.respect.laboratorywork1.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.Point;
 import ru.ssau.tk.respect.laboratorywork1.functions.TabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.factory.TabulatedFunctionFactory;
