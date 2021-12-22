@@ -168,7 +168,7 @@ public class SimpleOperationsWindow extends JDialog {
             tableModel, int flag) {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem fromTable = new JMenuItem("из таблицы");
-        JMenuItem fromFunction = new JMenuItem("из встроенной функции");
+        JMenuItem fromFunction = new JMenuItem("из функции");
 
         fromTable.addActionListener(ee -> {
             Window window = new Window(factory);
@@ -295,50 +295,54 @@ public class SimpleOperationsWindow extends JDialog {
         resultSaveButton.addActionListener(e -> writeFunction(RESULT_FUNCTION));
     }
 
-        private void readFunction(int flag) {
-            fileChooser.showOpenDialog(null);
-            File file = fileChooser.getSelectedFile();
+    private void readFunction(int flag) {
+        fileChooser.showOpenDialog(null);
+        File file = fileChooser.getSelectedFile();
 
-            if (file != null) {
-                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                    ArrayTabulatedFunction function = (ArrayTabulatedFunction) FunctionsIO.readTabulatedFunction(reader, new ArrayTabulatedFunctionFactory());
-                    switch (flag) {
-                        case FIRST_FUNCTION:
-                            firstFunction = function;
-                            setValues(xValues, yValues, function);
-                            firstTableModel.fireTableDataChanged();
-                            break;
-                        case SECOND_FUNCTION:
-                            secondFunction = function;
-                            setValues(secondXValues, secondYValues, function);
-                            secondTableModel.fireTableDataChanged();
-                    }
-                } catch (IOException e) {
-                    ExceptionHandler.showMessage(e.getMessage());
+        if (file != null) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                TabulatedFunction function = FunctionsIO.readTabulatedFunction(reader, factory);
+                switch (flag) {
+                    case FIRST_FUNCTION:
+                        firstFunction = function;
+                        setValues(xValues, yValues, function);
+                        firstTableModel.fireTableDataChanged();
+                        break;
+                    case SECOND_FUNCTION:
+                        secondFunction = function;
+                        setValues(secondXValues, secondYValues, function);
+                        secondTableModel.fireTableDataChanged();
                 }
+            } catch (IOException e) {
+                ExceptionHandler.showMessage(e.getMessage());
+            } catch (NumberFormatException exp) {
+                ExceptionHandler.showMessage("Некорректные данные");
             }
         }
+    }
 
-        private void writeFunction(int flag) {
-            fileChooser.showOpenDialog(null);
-            File file = fileChooser.getSelectedFile();
+    private void writeFunction(int flag) {
+        fileChooser.showOpenDialog(null);
+        File file = fileChooser.getSelectedFile();
 
-            if (file != null) {
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                    switch (flag) {
-                        case FIRST_FUNCTION:
-                            FunctionsIO.writeTabulatedFunction(writer, firstFunction);
-                            break;
-                        case SECOND_FUNCTION:
-                            FunctionsIO.writeTabulatedFunction(writer, secondFunction);
-                            break;
-                        case RESULT_FUNCTION:
-                            FunctionsIO.writeTabulatedFunction(writer, resultFunction);
-                    }
-                } catch (IOException e) {
-                    ExceptionHandler.showMessage(e.getMessage());
+        if (file != null) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                switch (flag) {
+                    case FIRST_FUNCTION:
+                        FunctionsIO.writeTabulatedFunction(writer, firstFunction);
+                        break;
+                    case SECOND_FUNCTION:
+                        FunctionsIO.writeTabulatedFunction(writer, secondFunction);
+                        break;
+                    case RESULT_FUNCTION:
+                        FunctionsIO.writeTabulatedFunction(writer, resultFunction);
                 }
+            } catch (IOException e) {
+                ExceptionHandler.showMessage(e.getMessage());
+            } catch (NullPointerException e) {
+                ExceptionHandler.showMessage("Введите функцию.");
             }
+        }
     }
 
     public static void main(String[] args) {
