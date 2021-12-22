@@ -67,7 +67,7 @@ public class SimpleOperationsWindow extends JDialog {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         setLayout(new FlowLayout());
-        setSize(1000, 400);
+        setSize(950, 400);
 
         saveButton.setFocusPainted(false);
         uploadButton.setFocusPainted(false);
