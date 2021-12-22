@@ -1,20 +1,29 @@
 package ru.ssau.tk.respect.laboratorywork1.ui;
 
 import ru.ssau.tk.respect.laboratorywork1.exceptions.InconsistentFunctionsException;
+import ru.ssau.tk.respect.laboratorywork1.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.TabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.respect.laboratorywork1.functions.factory.TabulatedFunctionFactory;
+import ru.ssau.tk.respect.laboratorywork1.io.FunctionsIO;
 import ru.ssau.tk.respect.laboratorywork1.operations.TabulatedFunctionOperationService;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SimpleOperationsWindow extends JDialog {
+
+    private static final int FIRST_FUNCTION = 0;
+    private static final int SECOND_FUNCTION = 1;
+    private static final int RESULT_FUNCTION = 2;
 
     List<String> xValues = new ArrayList<>();
     List<String> yValues = new ArrayList<>();
@@ -34,7 +43,7 @@ public class SimpleOperationsWindow extends JDialog {
     AbstractTableModel resultTableModel = new NotEditable(resultXValues, resultYValues);
     JTable resultTable = new JTable(resultTableModel);
 
-    JComboBox<String> comboBox = new JComboBox<>(new String[]{"+", "-", "*", "÷",});
+    JComboBox<String> comboBox = new JComboBox<>(new String[]{"+", "-", "*", "÷"});
 
     JButton saveButton = new JButton("Сохранить");
     JButton uploadButton = new JButton("Загрузить");
@@ -50,6 +59,9 @@ public class SimpleOperationsWindow extends JDialog {
     private final TabulatedFunctionFactory factory;
     private TabulatedFunction firstFunction;
     private TabulatedFunction secondFunction;
+    private TabulatedFunction resultFunction;
+
+    JFileChooser fileChooser;
 
 
     public SimpleOperationsWindow(TabulatedFunctionFactory factory) {
@@ -153,17 +165,19 @@ public class SimpleOperationsWindow extends JDialog {
     }
 
     private void getPopupMenu(JButton button, List<String> xValues, List<String> yValues, AbstractTableModel
-            tableModel) {
+            tableModel, int flag) {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem fromTable = new JMenuItem("из таблицы");
         JMenuItem fromFunction = new JMenuItem("из встроенной функции");
 
         fromTable.addActionListener(ee -> {
             Window window = new Window(factory);
-            if (button == createButton) {
-                firstFunction = window.getFunction();
-            } else if (button == createButtonTwo) {
-                secondFunction = window.getFunction();
+            switch (flag) {
+                case FIRST_FUNCTION:
+                    firstFunction = window.getFunction();
+                    break;
+                case SECOND_FUNCTION:
+                    secondFunction = window.getFunction();
             }
 
             setValues(xValues, yValues, window.getFunction());
@@ -172,10 +186,12 @@ public class SimpleOperationsWindow extends JDialog {
 
         fromFunction.addActionListener(ee -> {
             SecondWindow window = new SecondWindow(factory);
-            if (button == createButton) {
-                firstFunction = window.getFunction();
-            } else if (button == createButtonTwo) {
-                secondFunction = window.getFunction();
+            switch (flag) {
+                case FIRST_FUNCTION:
+                    firstFunction = window.getFunction();
+                    break;
+                case SECOND_FUNCTION:
+                    secondFunction = window.getFunction();
             }
             setValues(xValues, yValues, window.getFunction());
             tableModel.fireTableDataChanged();
@@ -187,28 +203,12 @@ public class SimpleOperationsWindow extends JDialog {
         popupMenu.show(button, button.getWidth() + 1, button.getHeight() / 30);
     }
 
-    private TabulatedFunction doOperation(TabulatedFunction a, TabulatedFunction b) {
-        TabulatedFunctionOperationService operation = new TabulatedFunctionOperationService(factory);
-
-        switch ((String) comboBox.getSelectedItem()) {
-            case "+":
-                return operation.summarize(a, b);
-            case "-":
-                return operation.subtract(a, b);
-            case "*":
-                return operation.multiply(a, b);
-            case "/":
-                return operation.divide(a, b);
-        }
-        return a;
-    }
-
     private void addButtonListeners() {
         createButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    getPopupMenu(createButton, xValues, yValues, firstTableModel);
+                    getPopupMenu(createButton, xValues, yValues, firstTableModel, FIRST_FUNCTION);
                 }
             }
 
@@ -237,7 +237,7 @@ public class SimpleOperationsWindow extends JDialog {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    getPopupMenu(createButtonTwo, secondXValues, secondYValues, secondTableModel);
+                    getPopupMenu(createButtonTwo, secondXValues, secondYValues, secondTableModel, SECOND_FUNCTION);
                 }
             }
 
@@ -260,7 +260,20 @@ public class SimpleOperationsWindow extends JDialog {
 
         resultButton.addActionListener(e -> {
             try {
-                TabulatedFunction resultFunction = doOperation(firstFunction, secondFunction);
+                TabulatedFunctionOperationService operation = new TabulatedFunctionOperationService(factory);
+                switch ((String) comboBox.getSelectedItem()) {
+                    case "+":
+                        resultFunction = operation.summarize(firstFunction, secondFunction);
+                        break;
+                    case "-":
+                        resultFunction = operation.subtract(firstFunction, secondFunction);
+                        break;
+                    case "*":
+                        resultFunction = operation.multiply(firstFunction, secondFunction);
+                        break;
+                    case "/":
+                        resultFunction = operation.divide(firstFunction, secondFunction);
+                }
                 setValues(resultXValues, resultYValues, resultFunction);
                 resultTableModel.fireTableDataChanged();
             } catch (NullPointerException exp) {
@@ -269,6 +282,63 @@ public class SimpleOperationsWindow extends JDialog {
                 ExceptionHandler.showMessage(exp.getMessage());
             }
         });
+
+        fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Text Files", "txt"));
+        fileChooser.setAcceptAllFileFilterUsed(false);
+
+        uploadButton.addActionListener(e -> readFunction(FIRST_FUNCTION));
+        uploadButtonTwo.addActionListener(e -> readFunction(SECOND_FUNCTION));
+        saveButton.addActionListener(e -> writeFunction(FIRST_FUNCTION));
+        uploadButtonTwo.addActionListener(e -> writeFunction(SECOND_FUNCTION));
+        resultSaveButton.addActionListener(e -> writeFunction(RESULT_FUNCTION));
+    }
+
+        private void readFunction(int flag) {
+            fileChooser.showOpenDialog(null);
+            File file = fileChooser.getSelectedFile();
+
+            if (file != null) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                    ArrayTabulatedFunction function = (ArrayTabulatedFunction) FunctionsIO.readTabulatedFunction(reader, new ArrayTabulatedFunctionFactory());
+                    switch (flag) {
+                        case FIRST_FUNCTION:
+                            firstFunction = function;
+                            setValues(xValues, yValues, function);
+                            firstTableModel.fireTableDataChanged();
+                            break;
+                        case SECOND_FUNCTION:
+                            secondFunction = function;
+                            setValues(secondXValues, secondYValues, function);
+                            secondTableModel.fireTableDataChanged();
+                    }
+                } catch (IOException e) {
+                    ExceptionHandler.showMessage(e.getMessage());
+                }
+            }
+        }
+
+        private void writeFunction(int flag) {
+            fileChooser.showOpenDialog(null);
+            File file = fileChooser.getSelectedFile();
+
+            if (file != null) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                    switch (flag) {
+                        case FIRST_FUNCTION:
+                            FunctionsIO.writeTabulatedFunction(writer, firstFunction);
+                            break;
+                        case SECOND_FUNCTION:
+                            FunctionsIO.writeTabulatedFunction(writer, secondFunction);
+                            break;
+                        case RESULT_FUNCTION:
+                            FunctionsIO.writeTabulatedFunction(writer, resultFunction);
+                    }
+                } catch (IOException e) {
+                    ExceptionHandler.showMessage(e.getMessage());
+                }
+            }
     }
 
     public static void main(String[] args) {
