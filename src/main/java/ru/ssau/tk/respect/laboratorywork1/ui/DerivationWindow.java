@@ -153,12 +153,10 @@ public class DerivationWindow extends JDialog {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-
             }
 
             @Override

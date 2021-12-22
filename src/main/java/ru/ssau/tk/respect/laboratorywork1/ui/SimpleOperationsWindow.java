@@ -60,7 +60,6 @@ public class SimpleOperationsWindow extends JDialog {
 
     private JFileChooser fileChooser;
 
-
     public SimpleOperationsWindow(TabulatedFunctionFactory factory) {
         this.factory = factory;
         setModal(true);
