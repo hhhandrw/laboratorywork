@@ -11,8 +11,8 @@ import java.util.Map;
 
 public class SecondWindow extends JDialog {
 
-    private final JLabel label = new JLabel("Введите количество точек разбиения:");
-    private final JTextField textField = new JTextField("");
+    private final JLabel firstLabel = new JLabel("Введите количество точек разбиения:");
+    private final JTextField firstTextField = new JTextField("");
     private final JLabel secondLabel = new JLabel("Интервал с");
     private final JTextField secondTextField = new JTextField("");
     private final JLabel thirdLabel = new JLabel("по");
@@ -58,7 +58,7 @@ public class SecondWindow extends JDialog {
         MathFunction selectedFunction = functionsMap.get(functionName);
         double from = Double.parseDouble(secondTextField.getText());
         double to = Double.parseDouble(thirdTextField.getText());
-        int count = Integer.parseInt(textField.getText());
+        int count = Integer.parseInt(firstTextField.getText());
 
         function = factory.createFromFunction(selectedFunction, from, to, count);
         System.out.println(function);
@@ -67,7 +67,7 @@ public class SecondWindow extends JDialog {
     private void addButtonListeners() {
         createButton.addActionListener(e -> {
             try {
-                int size = Integer.parseInt(textField.getText());
+                int size = Integer.parseInt(firstTextField.getText());
                 if (size <= 0) {
                     ExceptionHandler.showMessage("Введите положительное число");
                 }
@@ -89,8 +89,8 @@ public class SecondWindow extends JDialog {
 
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                 .addGroup(layout.createSequentialGroup()
-                        .addComponent(label)
-                        .addComponent(textField))
+                        .addComponent(firstLabel)
+                        .addComponent(firstTextField))
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(secondLabel)
                         .addComponent(secondTextField)
@@ -102,8 +102,8 @@ public class SecondWindow extends JDialog {
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(label)
-                        .addComponent(textField))
+                        .addComponent(firstLabel)
+                        .addComponent(firstTextField))
                 .addGroup(layout.createParallelGroup()
                         .addComponent(secondLabel)
                         .addComponent(secondTextField)

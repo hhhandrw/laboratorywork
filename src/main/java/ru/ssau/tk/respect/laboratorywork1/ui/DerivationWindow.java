@@ -17,16 +17,13 @@ import java.util.ArrayList;
 
 public class DerivationWindow extends JDialog {
 
-    private static final int FIRST_FUNCTION = 0;
-    private static final int RESULT_FUNCTION = 2;
-
     private final ArrayList<String> xValues = new ArrayList<>();
     private final ArrayList<String> yValues = new ArrayList<>();
     private final ArrayList<String> resultXValues = new ArrayList<>();
     private final ArrayList<String> resultYValues = new ArrayList<>();
 
     private final AbstractTableModel tableModel = new PartiallyEditable(xValues, yValues);
-    private final JTable firstTable = new JTable(tableModel);
+    private final JTable table = new JTable(tableModel);
 
     private final AbstractTableModel resultTableModel = new NotEditable(resultXValues, resultYValues);
     private final JTable resultTable = new JTable(resultTableModel);
@@ -40,7 +37,7 @@ public class DerivationWindow extends JDialog {
     private JFileChooser fileChooser;
 
     private final TabulatedFunctionFactory factory;
-    private TabulatedFunction firstFunction;
+    private TabulatedFunction function;
     private TabulatedFunction resultFunction;
 
     public DerivationWindow(TabulatedFunctionFactory factory) {
@@ -61,7 +58,7 @@ public class DerivationWindow extends JDialog {
         resultSaveButton.setEnabled(false);
         resultButton.setEnabled(false);
 
-        firstTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addButtonListeners();
         compose();
         setLocationRelativeTo(null);
@@ -75,7 +72,7 @@ public class DerivationWindow extends JDialog {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
-        JScrollPane scrollPane = new JScrollPane(firstTable);
+        JScrollPane scrollPane = new JScrollPane(table);
         JScrollPane resultScrollPane = new JScrollPane(resultTable);
 
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -114,6 +111,16 @@ public class DerivationWindow extends JDialog {
         }
     }
 
+    private void setTable(TabulatedFunction function) {
+        if (function != null) {
+            this.function = function;
+            saveButton.setEnabled(true);
+            resultButton.setEnabled(true);
+            setValues(xValues, yValues, this.function);
+            tableModel.fireTableDataChanged();
+        }
+    }
+
     private void addButtonListeners() {
         createButton.addMouseListener(new MouseListener() {
             @Override
@@ -125,24 +132,12 @@ public class DerivationWindow extends JDialog {
 
                     fromTable.addActionListener(ee -> {
                         Window window = new Window(factory);
-                        if (window.getFunction() != null) {
-                            firstFunction = window.getFunction();
-                            saveButton.setEnabled(true);
-                            resultButton.setEnabled(true);
-                            setValues(xValues, yValues, firstFunction);
-                            tableModel.fireTableDataChanged();
-                        }
+                        setTable(window.getFunction());
                     });
 
                     fromFunction.addActionListener(ee -> {
                         SecondWindow window = new SecondWindow(factory);
-                        if (window.getFunction() != null) {
-                            firstFunction = window.getFunction();
-                            saveButton.setEnabled(true);
-                            resultButton.setEnabled(true);
-                            setValues(xValues, yValues, firstFunction);
-                            tableModel.fireTableDataChanged();
-                        }
+                        setTable(window.getFunction());
                     });
 
                     popupMenu.add(fromTable);
@@ -174,7 +169,7 @@ public class DerivationWindow extends JDialog {
         resultButton.addActionListener(e -> {
             try {
                 TabulatedDifferentialOperator operator = new TabulatedDifferentialOperator(factory);
-                resultFunction = operator.derive(firstFunction);
+                resultFunction = operator.derive(function);
                 setValues(resultXValues, resultYValues, resultFunction);
                 resultSaveButton.setEnabled(true);
                 resultTableModel.fireTableDataChanged();
@@ -195,8 +190,10 @@ public class DerivationWindow extends JDialog {
             if (file != null) {
                 try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                     TabulatedFunction function = FunctionsIO.readTabulatedFunction(reader, factory);
-                    firstFunction = function;
+                    this.function = function;
                     setValues(xValues, yValues, function);
+                    saveButton.setEnabled(true);
+                    resultButton.setEnabled(true);
                     tableModel.fireTableDataChanged();
 
                 } catch (IOException exp) {
@@ -207,23 +204,17 @@ public class DerivationWindow extends JDialog {
             }
         });
 
-        saveButton.addActionListener(e -> writeFunction(FIRST_FUNCTION));
-        resultSaveButton.addActionListener(e -> writeFunction(RESULT_FUNCTION));
+        saveButton.addActionListener(e -> writeFunction(function));
+        resultSaveButton.addActionListener(e -> writeFunction(resultFunction));
     }
 
-    private void writeFunction(int flag) {
+    private void writeFunction(TabulatedFunction function) {
         fileChooser.showSaveDialog(null);
         File file = fileChooser.getSelectedFile();
 
         if (file != null) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                switch (flag) {
-                    case FIRST_FUNCTION:
-                        FunctionsIO.writeTabulatedFunction(writer, firstFunction);
-                        break;
-                    case RESULT_FUNCTION:
-                        FunctionsIO.writeTabulatedFunction(writer, resultFunction);
-                }
+                FunctionsIO.writeTabulatedFunction(writer, function);
             } catch (IOException e) {
                 ExceptionHandler.showMessage(e.getMessage());
             }

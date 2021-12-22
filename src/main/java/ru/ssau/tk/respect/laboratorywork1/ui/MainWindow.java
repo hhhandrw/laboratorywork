@@ -2,7 +2,6 @@ package ru.ssau.tk.respect.laboratorywork1.ui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class MainWindow extends JFrame {
 
@@ -21,13 +20,6 @@ public class MainWindow extends JFrame {
         setSize(500, 500);
         setResizable(false);
 
-        getContentPane().add(arrayButton);
-        getContentPane().add(buttonTF);
-        getContentPane().add(operationButton);
-        getContentPane().add(settingsButton);
-        getContentPane().add(exitButton);
-
-        getContentPane().add(deriveButton);
         arrayButton.setFocusPainted(false);
         buttonTF.setFocusPainted(false);
         operationButton.setFocusPainted(false);

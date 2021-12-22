@@ -1,7 +1,6 @@
 package ru.ssau.tk.respect.laboratorywork1.ui;
 
 import ru.ssau.tk.respect.laboratorywork1.exceptions.InconsistentFunctionsException;
-import ru.ssau.tk.respect.laboratorywork1.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.TabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.respect.laboratorywork1.functions.factory.TabulatedFunctionFactory;
@@ -17,13 +16,11 @@ import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class SimpleOperationsWindow extends JDialog {
 
     private static final int FIRST_FUNCTION = 0;
     private static final int SECOND_FUNCTION = 1;
-    private static final int RESULT_FUNCTION = 2;
 
     private final List<String> xValues = new ArrayList<>();
     private final List<String> yValues = new ArrayList<>();
@@ -162,44 +159,19 @@ public class SimpleOperationsWindow extends JDialog {
         }
     }
 
-    private void getPopupMenu(JButton button, List<String> xValues, List<String> yValues, AbstractTableModel
-            tableModel, int flag) {
+    private void getPopupMenu(JButton button, int flag) {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem fromTable = new JMenuItem("из таблицы");
         JMenuItem fromFunction = new JMenuItem("из функции");
 
         fromTable.addActionListener(ee -> {
             Window window = new Window(factory);
-            if (window.getFunction() != null) {
-                switch (flag) {
-                    case FIRST_FUNCTION:
-                        firstFunction = window.getFunction();
-                        saveButton.setEnabled(true);
-                        break;
-                    case SECOND_FUNCTION:
-                        secondFunction = window.getFunction();
-                        saveButtonTwo.setEnabled(true);
-                }
-                setValues(xValues, yValues, window.getFunction());
-                tableModel.fireTableDataChanged();
-            }
+            setTable(window.getFunction(), flag);
         });
 
         fromFunction.addActionListener(ee -> {
             SecondWindow window = new SecondWindow(factory);
-            if (window.getFunction() != null) {
-                switch (flag) {
-                    case FIRST_FUNCTION:
-                        firstFunction = window.getFunction();
-                        saveButton.setEnabled(true);
-                        break;
-                    case SECOND_FUNCTION:
-                        secondFunction = window.getFunction();
-                        window.setEnabled(true);
-                }
-                setValues(xValues, yValues, window.getFunction());
-                tableModel.fireTableDataChanged();
-            }
+            setTable(window.getFunction(), flag);
         });
 
         popupMenu.add(fromTable);
@@ -208,12 +180,30 @@ public class SimpleOperationsWindow extends JDialog {
         popupMenu.show(button, button.getWidth() + 1, button.getHeight() / 30);
     }
 
+    private void setTable(TabulatedFunction function, int flag) {
+        if (function != null) {
+            switch (flag) {
+                case FIRST_FUNCTION:
+                    firstFunction = function;
+                    saveButton.setEnabled(true);
+                    setValues(xValues, yValues, firstFunction);
+                    firstTableModel.fireTableDataChanged();
+                    break;
+                case SECOND_FUNCTION:
+                    secondFunction = function;
+                    saveButtonTwo.setEnabled(true);
+                    setValues(secondXValues, secondYValues, secondFunction);
+                    secondTableModel.fireTableDataChanged();
+            }
+        }
+    }
+
     private void addButtonListeners() {
         createButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    getPopupMenu(createButton, xValues, yValues, firstTableModel, FIRST_FUNCTION);
+                    getPopupMenu(createButton, FIRST_FUNCTION);
                 }
             }
 
@@ -242,7 +232,7 @@ public class SimpleOperationsWindow extends JDialog {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    getPopupMenu(createButtonTwo, secondXValues, secondYValues, secondTableModel, SECOND_FUNCTION);
+                    getPopupMenu(createButtonTwo, SECOND_FUNCTION);
                 }
             }
 
@@ -282,8 +272,6 @@ public class SimpleOperationsWindow extends JDialog {
                 setValues(resultXValues, resultYValues, resultFunction);
                 resultSaveButton.setEnabled(true);
                 resultTableModel.fireTableDataChanged();
-            } catch (NullPointerException exp) {
-                ExceptionHandler.showMessage("Введите обе функции");
             } catch (InconsistentFunctionsException exp) {
                 ExceptionHandler.showMessage(exp.getMessage());
             }
@@ -296,9 +284,10 @@ public class SimpleOperationsWindow extends JDialog {
 
         uploadButton.addActionListener(e -> readFunction(FIRST_FUNCTION));
         uploadButtonTwo.addActionListener(e -> readFunction(SECOND_FUNCTION));
-        saveButton.addActionListener(e -> writeFunction(FIRST_FUNCTION));
-        uploadButtonTwo.addActionListener(e -> writeFunction(SECOND_FUNCTION));
-        resultSaveButton.addActionListener(e -> writeFunction(RESULT_FUNCTION));
+
+        saveButton.addActionListener(e -> writeFunction(firstFunction));
+        uploadButtonTwo.addActionListener(e -> writeFunction(secondFunction));
+        resultSaveButton.addActionListener(e -> writeFunction(resultFunction));
     }
 
     private void readFunction(int flag) {
@@ -312,11 +301,13 @@ public class SimpleOperationsWindow extends JDialog {
                     case FIRST_FUNCTION:
                         firstFunction = function;
                         setValues(xValues, yValues, function);
+                        saveButton.setEnabled(true);
                         firstTableModel.fireTableDataChanged();
                         break;
                     case SECOND_FUNCTION:
                         secondFunction = function;
                         setValues(secondXValues, secondYValues, function);
+                        saveButtonTwo.setEnabled(true);
                         secondTableModel.fireTableDataChanged();
                 }
             } catch (IOException e) {
@@ -327,22 +318,13 @@ public class SimpleOperationsWindow extends JDialog {
         }
     }
 
-    private void writeFunction(int flag) {
+    private void writeFunction(TabulatedFunction function) {
         fileChooser.showSaveDialog(null);
         File file = fileChooser.getSelectedFile();
 
         if (file != null) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                switch (flag) {
-                    case FIRST_FUNCTION:
-                        FunctionsIO.writeTabulatedFunction(writer, firstFunction);
-                        break;
-                    case SECOND_FUNCTION:
-                        FunctionsIO.writeTabulatedFunction(writer, secondFunction);
-                        break;
-                    case RESULT_FUNCTION:
-                        FunctionsIO.writeTabulatedFunction(writer, resultFunction);
-                }
+                FunctionsIO.writeTabulatedFunction(writer, function);
             } catch (IOException e) {
                 ExceptionHandler.showMessage(e.getMessage());
             }
