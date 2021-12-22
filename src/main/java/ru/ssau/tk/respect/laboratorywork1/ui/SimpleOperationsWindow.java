@@ -274,6 +274,8 @@ public class SimpleOperationsWindow extends JDialog {
                 resultTableModel.fireTableDataChanged();
             } catch (InconsistentFunctionsException exp) {
                 ExceptionHandler.showMessage(exp.getMessage());
+            } catch (NullPointerException exp) {
+                ExceptionHandler.showMessage("Введите обе функции");
             }
         });
 
