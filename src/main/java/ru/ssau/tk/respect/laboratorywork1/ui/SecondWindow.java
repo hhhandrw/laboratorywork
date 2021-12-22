@@ -21,9 +21,13 @@ public class SecondWindow extends JDialog {
             "Единичная функция", "Квадратичная функция", "Константная функция", "Нулевая функция", "Тангенсальная функция", "Тождественная функция", "Функция деления на 2"
     });
     JButton createButton = new JButton("Создать");
-    TabulatedFunction function;
 
-    public SecondWindow() {
+    private TabulatedFunction function;
+    private final TabulatedFunctionFactory factory;
+
+    public SecondWindow(TabulatedFunctionFactory factory) {
+        this.factory = factory;
+
         setModal(true);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLayout(new FlowLayout());
@@ -45,6 +49,10 @@ public class SecondWindow extends JDialog {
         setVisible(true);
     }
 
+    public TabulatedFunction getFunction() {
+        return function;
+    }
+
     private void createFunction() {
         Map<String, MathFunction> functionsMap = new HashMap<>();
         functionsMap.put("Единичная функция", new UnitFunction());
@@ -61,8 +69,8 @@ public class SecondWindow extends JDialog {
         double to = Double.parseDouble(thirdTextField.getText());
         int count = Integer.parseInt(textField.getText());
 
-        TabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
         function = factory.createFromFunction(selectedFunction, from, to, count);
+        System.out.println(function);
     }
 
     private void addButtonListeners() {
@@ -116,6 +124,6 @@ public class SecondWindow extends JDialog {
     }
 
     public static void main(String[] args) {
-        new SecondWindow();
+        new SecondWindow(new ArrayTabulatedFunctionFactory());
     }
 }

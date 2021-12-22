@@ -61,7 +61,7 @@ public class MainWindow extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Window();
+                new Window(WindowWithSettings.getFactory());
             }
         });
 
@@ -70,7 +70,7 @@ public class MainWindow extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SecondWindow();
+                new SecondWindow(WindowWithSettings.getFactory());
             }
         });
 
@@ -79,7 +79,7 @@ public class MainWindow extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new WindowWithSettings();
+                new SimpleOperationsWindow(WindowWithSettings.getFactory());
             }
         });
 

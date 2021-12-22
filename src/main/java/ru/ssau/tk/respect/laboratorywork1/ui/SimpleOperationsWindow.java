@@ -1,6 +1,8 @@
 package ru.ssau.tk.respect.laboratorywork1.ui;
 
 import ru.ssau.tk.respect.laboratorywork1.functions.TabulatedFunction;
+import ru.ssau.tk.respect.laboratorywork1.functions.factory.ArrayTabulatedFunctionFactory;
+import ru.ssau.tk.respect.laboratorywork1.functions.factory.TabulatedFunctionFactory;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -10,7 +12,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleOperationsWindow extends JFrame {
+public class SimpleOperationsWindow extends JDialog {
 
     List<String> xValues = new ArrayList<>();
     List<String> yValues = new ArrayList<>();
@@ -44,9 +46,12 @@ public class SimpleOperationsWindow extends JFrame {
     JButton resultSaveButton = new JButton("Сохранить");
     JButton resultButton = new JButton("=");
 
-    public SimpleOperationsWindow() {
-        super("Operation Service");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    private final TabulatedFunctionFactory factory;
+
+    public SimpleOperationsWindow(TabulatedFunctionFactory factory) {
+        this.factory = factory;
+        setModal(true);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         setLayout(new FlowLayout());
         setSize(1000, 400);
@@ -142,26 +147,27 @@ public class SimpleOperationsWindow extends JFrame {
         }
     }
 
-    private void getPopupMenu(JButton button, List<String> xValues, List<String> yValues, AbstractTableModel tableModel) {
+    private void getPopupMenu(JButton button, List<String> xValues, List<String> yValues, AbstractTableModel
+            tableModel) {
         JPopupMenu popupMenu = new JPopupMenu();
-        JMenuItem table = new JMenuItem("из таблицы");
-        JMenuItem func = new JMenuItem("из встроенной функции");
+        JMenuItem fromTable = new JMenuItem("из таблицы");
+        JMenuItem fromFunction = new JMenuItem("из встроенной функции");
 
-        table.addActionListener(ee -> {
-            Window secondWindow = new Window();
-            setValues(xValues, yValues, secondWindow.function);
+        fromTable.addActionListener(ee -> {
+            Window window = new Window(factory);
+            setValues(xValues, yValues, window.getFunction());
             tableModel.fireTableDataChanged();
         });
 
-        func.addActionListener(ee -> {
-            SecondWindow secondWindow = new SecondWindow();
-            setValues(xValues, yValues, secondWindow.function);
+        fromFunction.addActionListener(ee -> {
+            SecondWindow window = new SecondWindow(factory);
+            setValues(xValues, yValues, window.getFunction());
             tableModel.fireTableDataChanged();
         });
 
-        popupMenu.add(table);
+        popupMenu.add(fromTable);
         popupMenu.addSeparator();
-        popupMenu.add(func);
+        popupMenu.add(fromFunction);
         popupMenu.show(button, button.getWidth() + 1, button.getHeight() / 30);
     }
 
@@ -222,6 +228,6 @@ public class SimpleOperationsWindow extends JFrame {
     }
 
     public static void main(String[] args) {
-        new SimpleOperationsWindow();
+        new SimpleOperationsWindow(new ArrayTabulatedFunctionFactory());
     }
 }

@@ -1,5 +1,9 @@
 package ru.ssau.tk.respect.laboratorywork1.ui;
 
+import ru.ssau.tk.respect.laboratorywork1.functions.factory.ArrayTabulatedFunctionFactory;
+import ru.ssau.tk.respect.laboratorywork1.functions.factory.LinkedListTabulatedFunctionFactory;
+import ru.ssau.tk.respect.laboratorywork1.functions.factory.TabulatedFunctionFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
@@ -7,6 +11,7 @@ import java.util.ArrayList;
 
 public class WindowWithSettings extends JDialog {
     JTabbedPane tabbedPane = new JTabbedPane();
+    private static TabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
 
     public WindowWithSettings() {
         setModal(true);
@@ -26,6 +31,10 @@ public class WindowWithSettings extends JDialog {
 
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public static TabulatedFunctionFactory getFactory() {
+        return factory;
     }
 
     private static class ColorOption extends JRadioButton {
@@ -67,12 +76,25 @@ public class WindowWithSettings extends JDialog {
         ButtonGroup group = new ButtonGroup();
 
         public SecondPanel() {
-            JRadioButton firstButton = new JRadioButton("Массивы", true);
-            group.add(firstButton);
-            JRadioButton secondButton = new JRadioButton("Связный список", false);
-            group.add(secondButton);
-            add(firstButton);
-            add(secondButton);
+            JRadioButton fromArrays = new JRadioButton("Массивы", true);
+            group.add(fromArrays);
+
+            JRadioButton fromList = new JRadioButton("Связный список", false);
+            group.add(fromList);
+
+            add(fromArrays);
+            add(fromList);
+
+            fromArrays.addItemListener(e -> {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    factory = new ArrayTabulatedFunctionFactory();
+                }
+            });
+            fromList.addItemListener(e -> {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    factory = new LinkedListTabulatedFunctionFactory();
+                }
+            });
         }
     }
 

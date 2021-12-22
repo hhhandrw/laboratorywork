@@ -3,6 +3,7 @@ package ru.ssau.tk.respect.laboratorywork1.ui;
 import ru.ssau.tk.respect.laboratorywork1.exceptions.ArrayIsNotSortedException;
 import ru.ssau.tk.respect.laboratorywork1.functions.TabulatedFunction;
 import ru.ssau.tk.respect.laboratorywork1.functions.factory.ArrayTabulatedFunctionFactory;
+import ru.ssau.tk.respect.laboratorywork1.functions.factory.TabulatedFunctionFactory;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -27,9 +28,13 @@ public class Window extends JDialog {
     JButton addButton = new JButton("Добавить");
     JButton createButton = new JButton("Создать");
     JButton refreshButton = new JButton("Очистить");
-    TabulatedFunction function;
 
-    public Window() {
+    private TabulatedFunction function;
+    private final TabulatedFunctionFactory factory;
+
+    public Window(TabulatedFunctionFactory factory) {
+        this.factory = factory;
+
         setModal(true);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLayout(new FlowLayout());
@@ -50,6 +55,10 @@ public class Window extends JDialog {
         compose();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public TabulatedFunction getFunction() {
+        return function;
     }
 
     private void compose() {
@@ -118,8 +127,8 @@ public class Window extends JDialog {
                     x[i] = Double.parseDouble(xValues.get(i));
                     y[i] = Double.parseDouble(yValues.get(i));
                 }
-                ArrayTabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
                 function =  factory.create(x, y);
+                System.out.println(function);
                 dispose();
             } catch (NumberFormatException exp) {
                 ExceptionHandler.showMessage("Введите число в виде десятичной дроби через точку");
@@ -192,6 +201,6 @@ public class Window extends JDialog {
     }
 
     public static void main(String[] args) {
-        new Window();
+        new Window(new ArrayTabulatedFunctionFactory());
     }
 }
