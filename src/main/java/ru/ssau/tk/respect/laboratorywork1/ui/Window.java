@@ -17,17 +17,17 @@ import java.util.List;
 
 public class Window extends JDialog {
 
-    List<String> xValues = new ArrayList<>();
-    List<String> yValues = new ArrayList<>();
+    private final List<String> xValues = new ArrayList<>();
+    private final List<String> yValues = new ArrayList<>();
 
-    AbstractTableModel tableModel = new Table(xValues, yValues);
-    JTable table = new JTable(tableModel);
-    JLabel label = new JLabel("Количество точек:");
+    private final AbstractTableModel tableModel = new Table(xValues, yValues);
+    private final JTable table = new JTable(tableModel);
+    private final JLabel label = new JLabel("Количество точек:");
 
-    JTextField textField = new JTextField("2");
-    JButton addButton = new JButton("Добавить");
-    JButton createButton = new JButton("Создать");
-    JButton refreshButton = new JButton("Очистить");
+    private final JTextField textField = new JTextField("2");
+    private final JButton addButton = new JButton("Добавить");
+    private final JButton createButton = new JButton("Создать");
+    private final JButton refreshButton = new JButton("Очистить");
 
     private TabulatedFunction function;
     private final TabulatedFunctionFactory factory;
@@ -43,12 +43,6 @@ public class Window extends JDialog {
         addButton.setFocusPainted(false);
         refreshButton.setFocusPainted(false);
         createButton.setFocusPainted(false);
-
-        getContentPane().add(label);
-        getContentPane().add(textField);
-        getContentPane().add(addButton);
-        getContentPane().add(createButton);
-        getContentPane().add(refreshButton);
 
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addButtonListeners();

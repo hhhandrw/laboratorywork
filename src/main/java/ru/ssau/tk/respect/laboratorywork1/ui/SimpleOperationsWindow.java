@@ -25,43 +25,43 @@ public class SimpleOperationsWindow extends JDialog {
     private static final int SECOND_FUNCTION = 1;
     private static final int RESULT_FUNCTION = 2;
 
-    List<String> xValues = new ArrayList<>();
-    List<String> yValues = new ArrayList<>();
+    private final List<String> xValues = new ArrayList<>();
+    private final List<String> yValues = new ArrayList<>();
 
-    List<String> secondXValues = new ArrayList<>();
-    List<String> secondYValues = new ArrayList<>();
+    private final List<String> secondXValues = new ArrayList<>();
+    private final List<String> secondYValues = new ArrayList<>();
 
-    List<String> resultXValues = new ArrayList<>();
-    List<String> resultYValues = new ArrayList<>();
+    private final List<String> resultXValues = new ArrayList<>();
+    private final List<String> resultYValues = new ArrayList<>();
 
-    AbstractTableModel firstTableModel = new PartiallyEditable(xValues, yValues);
-    JTable firstTable = new JTable(firstTableModel);
+    private final AbstractTableModel firstTableModel = new PartiallyEditable(xValues, yValues);
+    private final JTable firstTable = new JTable(firstTableModel);
 
-    AbstractTableModel secondTableModel = new PartiallyEditable(secondXValues, secondYValues);
-    JTable secondTable = new JTable(secondTableModel);
+    private final AbstractTableModel secondTableModel = new PartiallyEditable(secondXValues, secondYValues);
+    private final JTable secondTable = new JTable(secondTableModel);
 
-    AbstractTableModel resultTableModel = new NotEditable(resultXValues, resultYValues);
-    JTable resultTable = new JTable(resultTableModel);
+    private final AbstractTableModel resultTableModel = new NotEditable(resultXValues, resultYValues);
+    private final JTable resultTable = new JTable(resultTableModel);
 
-    JComboBox<String> comboBox = new JComboBox<>(new String[]{"+", "-", "*", "÷"});
+    private final JComboBox<String> comboBox = new JComboBox<>(new String[]{"+", "-", "*", "÷"});
 
-    JButton saveButton = new JButton("Сохранить");
-    JButton uploadButton = new JButton("Загрузить");
-    JButton createButton = new JButton("Создать");
+    private final JButton saveButton = new JButton("Сохранить");
+    private final JButton uploadButton = new JButton("Загрузить");
+    private final JButton createButton = new JButton("Создать");
 
-    JButton saveButtonTwo = new JButton("Сохранить");
-    JButton uploadButtonTwo = new JButton("Загрузить");
-    JButton createButtonTwo = new JButton("Создать");
+    private final JButton saveButtonTwo = new JButton("Сохранить");
+    private final JButton uploadButtonTwo = new JButton("Загрузить");
+    private final JButton createButtonTwo = new JButton("Создать");
 
-    JButton resultSaveButton = new JButton("Сохранить");
-    JButton resultButton = new JButton("=");
+    private final JButton resultSaveButton = new JButton("Сохранить");
+    private final JButton resultButton = new JButton("=");
 
     private final TabulatedFunctionFactory factory;
     private TabulatedFunction firstFunction;
     private TabulatedFunction secondFunction;
     private TabulatedFunction resultFunction;
 
-    JFileChooser fileChooser;
+    private JFileChooser fileChooser;
 
 
     public SimpleOperationsWindow(TabulatedFunctionFactory factory) {
@@ -85,11 +85,9 @@ public class SimpleOperationsWindow extends JDialog {
         comboBox.setFont(new Font("Consolas", Font.PLAIN, 18));
         resultButton.setFont(new Font("Consolas", Font.PLAIN, 20));
 
-        getContentPane().add(resultButton);
-        getContentPane().add(comboBox);
-        getContentPane().add(saveButton);
-        getContentPane().add(uploadButton);
-        getContentPane().add(createButton);
+        saveButton.setEnabled(false);
+        saveButtonTwo.setEnabled(false);
+        resultSaveButton.setEnabled(false);
 
         firstTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addButtonListeners();
@@ -172,29 +170,36 @@ public class SimpleOperationsWindow extends JDialog {
 
         fromTable.addActionListener(ee -> {
             Window window = new Window(factory);
-            switch (flag) {
-                case FIRST_FUNCTION:
-                    firstFunction = window.getFunction();
-                    break;
-                case SECOND_FUNCTION:
-                    secondFunction = window.getFunction();
+            if (window.getFunction() != null) {
+                switch (flag) {
+                    case FIRST_FUNCTION:
+                        firstFunction = window.getFunction();
+                        saveButton.setEnabled(true);
+                        break;
+                    case SECOND_FUNCTION:
+                        secondFunction = window.getFunction();
+                        saveButtonTwo.setEnabled(true);
+                }
+                setValues(xValues, yValues, window.getFunction());
+                tableModel.fireTableDataChanged();
             }
-
-            setValues(xValues, yValues, window.getFunction());
-            tableModel.fireTableDataChanged();
         });
 
         fromFunction.addActionListener(ee -> {
             SecondWindow window = new SecondWindow(factory);
-            switch (flag) {
-                case FIRST_FUNCTION:
-                    firstFunction = window.getFunction();
-                    break;
-                case SECOND_FUNCTION:
-                    secondFunction = window.getFunction();
+            if (window.getFunction() != null) {
+                switch (flag) {
+                    case FIRST_FUNCTION:
+                        firstFunction = window.getFunction();
+                        saveButton.setEnabled(true);
+                        break;
+                    case SECOND_FUNCTION:
+                        secondFunction = window.getFunction();
+                        window.setEnabled(true);
+                }
+                setValues(xValues, yValues, window.getFunction());
+                tableModel.fireTableDataChanged();
             }
-            setValues(xValues, yValues, window.getFunction());
-            tableModel.fireTableDataChanged();
         });
 
         popupMenu.add(fromTable);
@@ -275,6 +280,7 @@ public class SimpleOperationsWindow extends JDialog {
                         resultFunction = operation.divide(firstFunction, secondFunction);
                 }
                 setValues(resultXValues, resultYValues, resultFunction);
+                resultSaveButton.setEnabled(true);
                 resultTableModel.fireTableDataChanged();
             } catch (NullPointerException exp) {
                 ExceptionHandler.showMessage("Введите обе функции");
@@ -322,7 +328,7 @@ public class SimpleOperationsWindow extends JDialog {
     }
 
     private void writeFunction(int flag) {
-        fileChooser.showOpenDialog(null);
+        fileChooser.showSaveDialog(null);
         File file = fileChooser.getSelectedFile();
 
         if (file != null) {
@@ -339,8 +345,6 @@ public class SimpleOperationsWindow extends JDialog {
                 }
             } catch (IOException e) {
                 ExceptionHandler.showMessage(e.getMessage());
-            } catch (NullPointerException e) {
-                ExceptionHandler.showMessage("Введите функцию.");
             }
         }
     }

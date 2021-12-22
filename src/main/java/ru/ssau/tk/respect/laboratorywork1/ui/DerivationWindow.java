@@ -57,10 +57,9 @@ public class DerivationWindow extends JDialog {
         resultSaveButton.setFocusPainted(false);
         resultButton.setFocusPainted(false);
 
-        getContentPane().add(resultButton);
-        getContentPane().add(saveButton);
-        getContentPane().add(uploadButton);
-        getContentPane().add(createButton);
+        saveButton.setEnabled(false);
+        resultSaveButton.setEnabled(false);
+        resultButton.setEnabled(false);
 
         firstTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addButtonListeners();
@@ -121,26 +120,34 @@ public class DerivationWindow extends JDialog {
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     JPopupMenu popupMenu = new JPopupMenu();
-                    JMenuItem table = new JMenuItem("из таблицы");
-                    JMenuItem func = new JMenuItem("из функции");
+                    JMenuItem fromTable = new JMenuItem("из таблицы");
+                    JMenuItem fromFunction = new JMenuItem("из функции");
 
-                    table.addActionListener(ee -> {
+                    fromTable.addActionListener(ee -> {
                         Window window = new Window(factory);
-                        firstFunction = window.getFunction();
-                        setValues(xValues, yValues, firstFunction);
-                        tableModel.fireTableDataChanged();
+                        if (window.getFunction() != null) {
+                            firstFunction = window.getFunction();
+                            saveButton.setEnabled(true);
+                            resultButton.setEnabled(true);
+                            setValues(xValues, yValues, firstFunction);
+                            tableModel.fireTableDataChanged();
+                        }
                     });
 
-                    func.addActionListener(ee -> {
+                    fromFunction.addActionListener(ee -> {
                         SecondWindow window = new SecondWindow(factory);
-                        firstFunction = window.getFunction();
-                        setValues(xValues, yValues, firstFunction);
-                        tableModel.fireTableDataChanged();
+                        if (window.getFunction() != null) {
+                            firstFunction = window.getFunction();
+                            saveButton.setEnabled(true);
+                            resultButton.setEnabled(true);
+                            setValues(xValues, yValues, firstFunction);
+                            tableModel.fireTableDataChanged();
+                        }
                     });
 
-                    popupMenu.add(table);
+                    popupMenu.add(fromTable);
                     popupMenu.addSeparator();
-                    popupMenu.add(func);
+                    popupMenu.add(fromFunction);
                     popupMenu.show(createButton, createButton.getWidth() + 1, createButton.getHeight() / 30);
                 }
             }
@@ -169,6 +176,7 @@ public class DerivationWindow extends JDialog {
                 TabulatedDifferentialOperator operator = new TabulatedDifferentialOperator(factory);
                 resultFunction = operator.derive(firstFunction);
                 setValues(resultXValues, resultYValues, resultFunction);
+                resultSaveButton.setEnabled(true);
                 resultTableModel.fireTableDataChanged();
             } catch (NullPointerException exp) {
                 ExceptionHandler.showMessage("Введите функцию");
@@ -204,7 +212,7 @@ public class DerivationWindow extends JDialog {
     }
 
     private void writeFunction(int flag) {
-        fileChooser.showOpenDialog(null);
+        fileChooser.showSaveDialog(null);
         File file = fileChooser.getSelectedFile();
 
         if (file != null) {
@@ -218,8 +226,6 @@ public class DerivationWindow extends JDialog {
                 }
             } catch (IOException e) {
                 ExceptionHandler.showMessage(e.getMessage());
-            } catch (NullPointerException e) {
-                ExceptionHandler.showMessage("Введите функцию");
             }
         }
     }

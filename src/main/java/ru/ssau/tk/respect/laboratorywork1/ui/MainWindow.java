@@ -6,12 +6,12 @@ import java.awt.event.ActionEvent;
 
 public class MainWindow extends JFrame {
 
-    JButton arrayButton = new JButton("Создание функции из массивов");
-    JButton buttonTF = new JButton("Создание табулированной функции");
-    JButton operationButton = new JButton("Операции над функциями");
-    JButton settingsButton = new JButton("Настройки");
-    JButton exitButton = new JButton("Выход");
-    JButton deriveButton = new JButton("Дифференцирование функции");
+    private final JButton arrayButton = new JButton("Создание функции из массивов");
+    private final JButton buttonTF = new JButton("Создание табулированной функции");
+    private final JButton operationButton = new JButton("Операции над функциями");
+    private final JButton settingsButton = new JButton("Настройки");
+    private final JButton exitButton = new JButton("Выход");
+    private final JButton deriveButton = new JButton("Дифференцирование функции");
 
     public MainWindow() {
         super("MainWindow");
