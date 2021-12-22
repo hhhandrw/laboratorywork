@@ -13,7 +13,6 @@ import java.util.concurrent.locks.ReentrantLock;
 public class SynchronizedTabulatedFunction implements TabulatedFunction {
     private final TabulatedFunction tabulatedFunction;
     private final Object object;
-    private final Lock lock = new ReentrantLock(true);
 
     public SynchronizedTabulatedFunction(TabulatedFunction tabulatedFunction, Object object) {
         this.tabulatedFunction = tabulatedFunction;
@@ -25,10 +24,9 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
     }
 
     public <T> T doSynchronously(Operation<? extends T> operation) {
-        lock.lock();
-        T result = operation.apply(this);
-        lock.unlock();
-        return result;
+        synchronized (object) {
+            return operation.apply(this);
+        }
     }
 
     @Override
