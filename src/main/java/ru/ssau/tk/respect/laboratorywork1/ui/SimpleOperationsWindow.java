@@ -42,13 +42,14 @@ public class SimpleOperationsWindow extends JFrame {
     JButton createButtonTwo = new JButton("Создать");
 
     JButton resultSaveButton = new JButton("Сохранить");
+    JButton resultButton = new JButton("=");
 
     public SimpleOperationsWindow() {
         super("Operation Service");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         setLayout(new FlowLayout());
-        setSize(985, 400);
+        setSize(1000, 400);
 
         saveButton.setFocusPainted(false);
         uploadButton.setFocusPainted(false);
@@ -59,9 +60,10 @@ public class SimpleOperationsWindow extends JFrame {
         resultSaveButton.setFocusPainted(false);
 
         comboBox.setPreferredSize(new Dimension(2, 2));
-        label.setFont(new Font("Georgia", Font.BOLD, 24));
+        comboBox.setFont(new Font("Consolas", Font.PLAIN, 18));
+        resultButton.setFont(new Font("Consolas", Font.PLAIN, 20));
 
-        getContentPane().add(label);
+        getContentPane().add(resultButton);
         getContentPane().add(comboBox);
         getContentPane().add(saveButton);
         getContentPane().add(uploadButton);
@@ -91,7 +93,7 @@ public class SimpleOperationsWindow extends JFrame {
                         .addComponent(scrollPane)
                         .addComponent(comboBox)
                         .addComponent(scrollPaneTwo)
-                        .addComponent(label)
+                        .addComponent(resultButton)
                         .addComponent(resultScrollPane))
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(createButton)
@@ -115,7 +117,7 @@ public class SimpleOperationsWindow extends JFrame {
                         .addComponent(scrollPaneTwo)
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(130)
-                                .addComponent(label)
+                                .addComponent(resultButton)
                         )
                         .addComponent(resultScrollPane))
                 .addGroup(layout.createParallelGroup()
@@ -140,31 +142,35 @@ public class SimpleOperationsWindow extends JFrame {
         }
     }
 
+    private void getPopupMenu(JButton button, List<String> xValues, List<String> yValues, AbstractTableModel tableModel) {
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem table = new JMenuItem("из таблицы");
+        JMenuItem func = new JMenuItem("из встроенной функции");
+
+        table.addActionListener(ee -> {
+            Window secondWindow = new Window();
+            setValues(xValues, yValues, secondWindow.function);
+            tableModel.fireTableDataChanged();
+        });
+
+        func.addActionListener(ee -> {
+            SecondWindow secondWindow = new SecondWindow();
+            setValues(xValues, yValues, secondWindow.function);
+            tableModel.fireTableDataChanged();
+        });
+
+        popupMenu.add(table);
+        popupMenu.addSeparator();
+        popupMenu.add(func);
+        popupMenu.show(button, button.getWidth() + 1, button.getHeight() / 30);
+    }
+
     private void addButtonListeners() {
         createButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    JPopupMenu popupMenu = new JPopupMenu();
-                    JMenuItem fromTable = new JMenuItem("из таблицы");
-                    JMenuItem fromFunction = new JMenuItem("из функции");
-
-                    fromTable.addActionListener(ee -> {
-                        Window window = new Window();
-                        setValues(xValues, yValues, window.function);
-                        firstTableModel.fireTableDataChanged();
-                    });
-
-                    fromFunction.addActionListener(ee -> {
-                        SecondWindow window = new SecondWindow();
-                        setValues(xValues, yValues, window.function);
-                        firstTableModel.fireTableDataChanged();
-                    });
-
-                    popupMenu.add(fromTable);
-                    popupMenu.addSeparator();
-                    popupMenu.add(fromFunction);
-                    popupMenu.show(createButton, createButton.getWidth() + 1, createButton.getHeight() / 30);
+                    getPopupMenu(createButton, xValues, yValues, firstTableModel);
                 }
             }
 
@@ -186,6 +192,31 @@ public class SimpleOperationsWindow extends JFrame {
             @Override
             public void mouseExited(MouseEvent e) {
 
+            }
+        });
+
+        createButtonTwo.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    getPopupMenu(createButtonTwo, secondXValues, secondYValues, secondTableModel);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
             }
         });
     }
