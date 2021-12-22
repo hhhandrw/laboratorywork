@@ -19,7 +19,7 @@ public class WindowWithSettings extends JDialog {
         JPanel factorySelection = new SecondPanel();
         tabbedPane.addTab("Дизайн", design);
         tabbedPane.addTab("Выбор фабрики", factorySelection);
-        tabbedPane.setBackground(Color.orange);
+        tabbedPane.setBackground(Color.lightGray);
         tabbedPane.setForeground(Color.white);
 
         getContentPane().add(tabbedPane);
@@ -45,9 +45,10 @@ public class WindowWithSettings extends JDialog {
         public FirstPanel() {
             colorOptions.add(new ColorOption("Черный", Color.BLACK));
             colorOptions.add(new ColorOption("Белый", Color.WHITE));
-            colorOptions.add(new ColorOption("Серый", Color.LIGHT_GRAY));
-            colorOptions.add(new ColorOption("Оранжевый", Color.ORANGE));
-            colorOptions.add(new ColorOption("Желтый", Color.YELLOW));
+            colorOptions.add(new ColorOption("Светло-серый", Color.LIGHT_GRAY));
+            colorOptions.add(new ColorOption("Серый", Color.GRAY));
+            colorOptions.add(new ColorOption("Тёмно-серый", Color.DARK_GRAY));
+            colorOptions.add(new ColorOption("Голубой", Color.CYAN));
             ButtonGroup buttonGroup = new ButtonGroup();
             for (ColorOption colorOption : colorOptions) {
                 buttonGroup.add(colorOption);
@@ -66,18 +67,16 @@ public class WindowWithSettings extends JDialog {
         ButtonGroup group = new ButtonGroup();
 
         public SecondPanel() {
-            JRadioButton firstButton = new JRadioButton("фабрика массивов", true);
+            JRadioButton firstButton = new JRadioButton("Массивы", true);
             group.add(firstButton);
-            JRadioButton secondButton = new JRadioButton("фабрика списков", false);
+            JRadioButton secondButton = new JRadioButton("Связный список", false);
             group.add(secondButton);
             add(firstButton);
             add(secondButton);
         }
     }
 
-    private static JPanel createPanel(String name) {
-        JPanel panel = new JPanel();
-        panel.add(new Label(name));
-        return panel;
+    public static void main(String[] args) {
+        new WindowWithSettings();
     }
 }
