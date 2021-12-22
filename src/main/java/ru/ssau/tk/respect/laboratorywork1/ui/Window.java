@@ -52,10 +52,6 @@ public class Window extends JDialog {
         setVisible(true);
     }
 
-    public TabulatedFunction getFunction() {
-        return function;
-    }
-
     private void compose() {
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,31 +149,27 @@ public class Window extends JDialog {
                 if (e.getButton() == MouseEvent.BUTTON3) {
                     int selectedRow = table.getSelectedRow();
                     if (selectedRow != -1) {
-                        getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
+                        JPopupMenu popupMenu = new JPopupMenu();
+                        JMenuItem deleteItem = new JMenuItem("Удалить");
+                        JMenuItem cleanItem = new JMenuItem("Очистить");
+                        deleteItem.addActionListener(ee -> {
+                            xValues.remove(table.getSelectedRow());
+                            yValues.remove(table.getSelectedRow());
+                            if (xValues.isEmpty()) {
+                                refreshButton.setEnabled(false);
+                            }
+                            tableModel.fireTableDataChanged();
+                        });
+                        cleanItem.addActionListener(ee -> {
+                            xValues.set(table.getSelectedRow(), " ");
+                            yValues.set(table.getSelectedRow(), " ");
+                            tableModel.fireTableDataChanged();
+                        });
+                        popupMenu.add(deleteItem);
+                        popupMenu.add(cleanItem);
+                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
                     }
                 }
-            }
-
-            private JPopupMenu getPopupMenu() {
-                JPopupMenu popupMenu = new JPopupMenu();
-                JMenuItem deleteItem = new JMenuItem("Удалить");
-                JMenuItem cleanItem = new JMenuItem("Очистить");
-                deleteItem.addActionListener(e -> {
-                    xValues.remove(table.getSelectedRow());
-                    yValues.remove(table.getSelectedRow());
-                    if (xValues.isEmpty()) {
-                        refreshButton.setEnabled(false);
-                    }
-                    tableModel.fireTableDataChanged();
-                });
-                cleanItem.addActionListener(e -> {
-                    xValues.set(table.getSelectedRow(), " ");
-                    yValues.set(table.getSelectedRow(), " ");
-                    tableModel.fireTableDataChanged();
-                });
-                popupMenu.add(deleteItem);
-                popupMenu.add(cleanItem);
-                return popupMenu;
             }
 
             @Override

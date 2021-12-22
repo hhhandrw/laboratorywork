@@ -21,6 +21,7 @@ public class SecondWindow extends JDialog {
             "Единичная функция", "Квадратичная функция", "Константная функция", "Нулевая функция", "Тангенсальная функция", "Тождественная функция", "Функция деления на 2"
     });
     JButton createButton = new JButton("Создать");
+    TabulatedFunction function;
 
     public SecondWindow() {
         setModal(true);
@@ -61,8 +62,7 @@ public class SecondWindow extends JDialog {
         int count = Integer.parseInt(textField.getText());
 
         TabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
-        TabulatedFunction tabulatedFunction = factory.createFromFunction(selectedFunction, from, to, count);
-        System.out.println(tabulatedFunction);
+        function = factory.createFromFunction(selectedFunction, from, to, count);
     }
 
     private void addButtonListeners() {
