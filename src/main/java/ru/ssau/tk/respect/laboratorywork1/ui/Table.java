@@ -65,4 +65,9 @@ public class Table extends AbstractTableModel {
         }
         return super.getColumnName(column);
     }
+
+    public void removeAll() {
+        xValues.clear();
+        yValues.clear();
+    }
 }

@@ -11,6 +11,7 @@ public class MainWindow extends JFrame {
     private final JButton settingsButton = new JButton("Настройки");
     private final JButton exitButton = new JButton("Выход");
     private final JButton deriveButton = new JButton("Дифференцирование функции");
+    private final JButton compositeButton = new JButton("Сложные функции");
 
     public MainWindow() {
         super("MainWindow");
@@ -66,6 +67,10 @@ public class MainWindow extends JFrame {
                         .addGap(100)
                         .addComponent(exitButton)
                 )
+                .addGroup(layout.createSequentialGroup()
+                        .addGap(100)
+                        .addComponent(compositeButton)
+                )
         );
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGap(70)
@@ -77,9 +82,12 @@ public class MainWindow extends JFrame {
                 .addGap(20)
                 .addComponent(deriveButton)
                 .addGap(20)
+                .addComponent(compositeButton)
+                .addGap(20)
                 .addComponent(settingsButton)
                 .addGap(20)
                 .addComponent(exitButton)
+
         );
     }
 
@@ -90,6 +98,7 @@ public class MainWindow extends JFrame {
         settingsButton.addActionListener(e -> new WindowWithSettings());
         deriveButton.addActionListener(e -> new DerivationWindow(WindowWithSettings.getFactory()));
         exitButton.addActionListener(e -> System.exit(0));
+        compositeButton.addActionListener(evt -> new CompositeFunctionWindow());
     }
 
     public static void main(String[] args) {

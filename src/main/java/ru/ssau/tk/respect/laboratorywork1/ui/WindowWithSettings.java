@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class WindowWithSettings extends JDialog {
     JTabbedPane tabbedPane = new JTabbedPane();
-    private static TabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
+    public static TabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
     private static boolean check = true;
 
     public WindowWithSettings() {
